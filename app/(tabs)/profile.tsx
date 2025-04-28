@@ -1,0 +1,289 @@
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextTitle, TextSubheading, TextBody, TextCaption } from '@/components/StyledText';
+import Colors from '@/constants/Colors';
+import Layout from '@/constants/Layout';
+import Card from '@/components/Card';
+import Button from '@/components/Button';
+import { Settings, BookUser, Calendar, Clock, BellRing, ShieldCheck, CircleHelp as HelpCircle, ChevronRight } from 'lucide-react-native';
+import { progressStats } from '@/assets/data/mockData';
+import ProgressCard from '@/components/ProgressCard';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withTiming, 
+  withSequence, 
+  withDelay,
+} from 'react-native-reanimated';
+
+export default function ProfileScreen() {
+  const settingsScale = useSharedValue(1);
+  const profileImageScale = useSharedValue(1);
+
+  const handlePressSettings = () => {
+    settingsScale.value = withSequence(
+      withTiming(0.9, { duration: 100 }),
+      withTiming(1.1, { duration: 100 }),
+      withTiming(1, { duration: 100 })
+    );
+    console.log('Open settings');
+  };
+
+  const handlePressProfileImage = () => {
+    profileImageScale.value = withSequence(
+      withTiming(0.95, { duration: 150 }),
+      withTiming(1, { duration: 150 })
+    );
+    console.log('Update profile image');
+  };
+
+  const settingsAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: settingsScale.value }],
+    };
+  });
+
+  const profileImageAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: profileImageScale.value }],
+    };
+  });
+
+  const renderMenuItem = (
+    icon: React.ReactNode,
+    title: string,
+    subtitle?: string,
+    onPress?: () => void
+  ) => (
+    <TouchableOpacity 
+      style={styles.menuItem}
+      onPress={onPress || (() => console.log(`Press ${title}`))}
+    >
+      <View style={styles.menuItemLeft}>
+        <View style={styles.menuItemIcon}>
+          {icon}
+        </View>
+        <View>
+          <TextBody style={styles.menuItemTitle}>{title}</TextBody>
+          {subtitle && (
+            <TextCaption style={styles.menuItemSubtitle}>{subtitle}</TextCaption>
+          )}
+        </View>
+      </View>
+      <ChevronRight size={20} color={Colors.text.tertiary} />
+    </TouchableOpacity>
+  );
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.headerTop}>
+            <TextTitle>Profile</TextTitle>
+            <Animated.View style={settingsAnimatedStyle}>
+              <TouchableOpacity 
+                style={styles.settingsButton}
+                onPress={handlePressSettings}
+              >
+                <Settings size={24} color={Colors.text.primary} />
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+
+          <View style={styles.profileSection}>
+            <Animated.View style={profileImageAnimatedStyle}>
+              <TouchableOpacity 
+                onPress={handlePressProfileImage}
+                activeOpacity={0.9}
+              >
+                <Image 
+                  source={{ uri: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' }} 
+                  style={styles.profileImage} 
+                />
+              </TouchableOpacity>
+            </Animated.View>
+            
+            <View style={styles.profileInfo}>
+              <TextSubheading style={styles.profileName}>Alex Johnson</TextSubheading>
+              <TextCaption style={styles.profileEmail}>alex.johnson@example.com</TextCaption>
+              <Button 
+                title="Edit Profile" 
+                variant="outline" 
+                size="sm" 
+                onPress={() => console.log('Edit profile')}
+                style={styles.editButton}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <TextSubheading style={styles.sectionTitle}>Your Progress</TextSubheading>
+          
+          {progressStats.map((stat) => (
+            <ProgressCard
+              key={stat.id}
+              title={stat.title}
+              value={stat.value}
+              target={stat.target}
+              unit={stat.unit}
+              description={stat.description}
+            />
+          ))}
+        </View>
+
+        <Card style={styles.menuCard}>
+          <TextSubheading style={styles.menuTitle}>Account</TextSubheading>
+          
+          {renderMenuItem(
+            <BookUser size={20} color={Colors.primary.default} />,
+            'Personal Information',
+            'Update your personal details'
+          )}
+          
+          {renderMenuItem(
+            <Calendar size={20} color={Colors.primary.default} />,
+            'My Schedule',
+            'View upcoming appointments'
+          )}
+          
+          {renderMenuItem(
+            <Clock size={20} color={Colors.primary.default} />,
+            'Activity History',
+            'View your app usage'
+          )}
+        </Card>
+
+        <Card style={styles.menuCard}>
+          <TextSubheading style={styles.menuTitle}>Settings</TextSubheading>
+          
+          {renderMenuItem(
+            <BellRing size={20} color={Colors.primary.default} />,
+            'Notifications',
+            'Manage your notifications'
+          )}
+          
+          {renderMenuItem(
+            <ShieldCheck size={20} color={Colors.primary.default} />,
+            'Privacy',
+            'Update privacy settings'
+          )}
+          
+          {renderMenuItem(
+            <HelpCircle size={20} color={Colors.primary.default} />,
+            'Help & Support',
+            'Get assistance and FAQ'
+          )}
+        </Card>
+
+        <Button
+          title="Log Out"
+          variant="outline"
+          onPress={() => console.log('Log out')}
+          style={styles.logoutButton}
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background.secondary,
+  },
+  header: {
+    backgroundColor: Colors.background.primary,
+    paddingTop: Layout.spacing.md,
+    paddingHorizontal: Layout.spacing.lg,
+    paddingBottom: Layout.spacing.lg,
+    borderBottomLeftRadius: Layout.borderRadius.lg,
+    borderBottomRightRadius: Layout.borderRadius.lg,
+    shadowColor: Colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Layout.spacing.lg,
+  },
+  settingsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: Layout.borderRadius.full,
+    backgroundColor: Colors.background.tertiary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: Layout.borderRadius.full,
+  },
+  profileInfo: {
+    marginLeft: Layout.spacing.md,
+    flex: 1,
+  },
+  profileName: {
+    marginBottom: 2,
+  },
+  profileEmail: {
+    color: Colors.text.secondary,
+    marginBottom: Layout.spacing.sm,
+  },
+  editButton: {
+    alignSelf: 'flex-start',
+  },
+  section: {
+    padding: Layout.spacing.lg,
+  },
+  sectionTitle: {
+    marginBottom: Layout.spacing.md,
+  },
+  menuCard: {
+    marginHorizontal: Layout.spacing.lg,
+    marginBottom: Layout.spacing.lg,
+  },
+  menuTitle: {
+    marginBottom: Layout.spacing.md,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Layout.spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.neutral[200],
+  },
+  menuItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuItemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: Layout.borderRadius.md,
+    backgroundColor: Colors.primary.light + '20',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: Layout.spacing.md,
+  },
+  menuItemTitle: {
+    fontFamily: 'PlusJakartaSans-Medium',
+  },
+  menuItemSubtitle: {
+    color: Colors.text.secondary,
+  },
+  logoutButton: {
+    marginHorizontal: Layout.spacing.lg,
+    marginBottom: Layout.spacing.xl,
+  },
+});
