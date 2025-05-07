@@ -7,6 +7,7 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import { useState } from 'react';
 import { Mail, Lock, User, ArrowLeft } from 'lucide-react-native';
+import axios from 'axios';
 
 export default function SignUpScreen() {
   const [name, setName] = useState('');
@@ -18,13 +19,21 @@ export default function SignUpScreen() {
   const handleSignUp = async () => {
     setLoading(true);
     setError(null);
-    
-    // TODO: Implement actual registration
-    setTimeout(() => {
+
+    try {
+      const response = await axios.post('http://localhost:5000/signup', {
+        name,
+        email,
+        password,
+      });
       setLoading(false);
-      // Mock error for now
-      setError('Email already in use');
-    }, 1000);
+      console.log(response.data.message);
+      // Handle success (e.g., navigate to login screen)
+      router.push('/sign-in');
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.response?.data?.error || 'Something went wrong');
+    }
   };
 
   return (
