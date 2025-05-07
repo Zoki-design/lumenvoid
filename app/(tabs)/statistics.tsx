@@ -2,7 +2,7 @@ import { View, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-n
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextTitle, TextSubheading, TextCaption } from '@/components/StyledText';
-import Card from '@/components/Card';
+import { themes } from '@/constants/Colours';
 import MeditationCard from '@/components/MeditationCard';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
@@ -41,7 +41,7 @@ export default function MeditateScreen() {
 
   const searchContainerStyle = useAnimatedStyle(() => {
     return {
-      width: searchInputWidth.value,
+      width: parseFloat(searchInputWidth.value) / 100 * Layout.window.width,
     };
   });
 
@@ -82,7 +82,7 @@ export default function MeditateScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <TextTitle style={styles.title}>Meditate</TextTitle>
+        <TextTitle style={styles.title}>Recorded Moods</TextTitle>
         
         <View style={styles.searchContainer}>
           <Animated.View style={[styles.searchInputContainer, searchContainerStyle]}>
@@ -130,15 +130,6 @@ export default function MeditateScreen() {
         contentContainerStyle={styles.meditationsList}
         showsVerticalScrollIndicator={false}
       />
-
-      <Card style={styles.featuredCard}>
-        <View style={styles.featuredContent}>
-          <TextSubheading style={styles.featuredTitle}>Daily Practice</TextSubheading>
-          <TextCaption style={styles.featuredText}>
-            Maintain a regular meditation practice to see significant improvements in your mental wellbeing.
-          </TextCaption>
-        </View>
-      </Card>
     </SafeAreaView>
   );
 }

@@ -22,7 +22,7 @@ export default function SignInScreen() {
       // Example: Simple local validation
       if (email === 'batzorig23f@gmail.com' && password === 'zoki222222') {
         setLoading(false);
-        router.replace('/profile'); // Navigate to home screen (or wherever you want)
+        router.replace('/(tabs)'); // Navigate to the profile screen
       } else {
         throw new Error('Invalid email or password');
       }
@@ -80,7 +80,7 @@ export default function SignInScreen() {
 
         <View style={styles.footer}>
           <TextBody>Don't have an account? </TextBody>
-          <Link href="/sign-up" asChild>
+          <Link href="../sign-up" asChild>
             <TouchableOpacity>
               <TextBody style={styles.link}>Sign Up</TextBody>
             </TouchableOpacity>

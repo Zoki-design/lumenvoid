@@ -1,15 +1,25 @@
 // Mock data for the app
 
 export const moods = [
-  { id: '1', emoji: '😊', label: 'Happy' },
-  { id: '2', emoji: '😌', label: 'Calm' },
-  { id: '3', emoji: '😐', label: 'Neutral' },
-  { id: '4', emoji: '😔', label: 'Sad' },
-  { id: '5', emoji: '😡', label: 'Angry' },
-  { id: '6', emoji: '😰', label: 'Anxious' },
-  { id: '7', emoji: '😴', label: 'Tired' },
-  { id: '8', emoji: '🥰', label: 'Loved' },
+  { id: '1', image: require('@/assets/icons/happy1.png'), label: 'Happy', count: '14'},
+  { id: '2', image: require('@/assets/icons/meh1.png'), label: 'Neutral', count: '20'},
+  { id: '3', image: require('@/assets/icons/mad1.png'), label: 'Angry', count: '37' },
+  { id: '4', image: require('@/assets/icons/sad1.png'), label: 'Sad', count: '12' },
+  { id: '5', image: require('@/assets/icons/anxious1.png'), label: 'Anxious', count:'18' },
+  { id: '6', image: require('@/assets/icons/depressed1.png'), label: 'Depressed', count: '5' },
+  { id: '7', image: require('@/assets/icons/None.png'), label: 'None', count: '0' },
+
 ];
+
+export const dates = [
+  { id: '1', month: 'Apr', day: '14', week: 'Mon' },
+  { id: '2', month: 'Apr', day: '15', week: 'Tue' },
+  { id: '3', month: 'Apr', day: '16', week: 'Wed' },
+  { id: '4', month: 'Apr', day: '17', week: 'Thu' },
+  { id: '5', month: 'Apr', day: '18', week: 'Fri' },
+  { id: '6', month: 'Apr', day: '19', week: 'Sat' },
+  { id: '7', month: 'Apr', day: '20', week: 'Sun' },
+]
 
 export const meditations = [
   {

@@ -1,8 +1,9 @@
 import { View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { TextSubheading, TextCaption } from './StyledText';
-import { Play } from 'lucide-react-native';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
+import { themes } from '@/constants/Colours';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Animated, { 
   useAnimatedStyle, 
   withTiming, 
@@ -50,10 +51,10 @@ export default function MeditationCard({
           <View style={styles.overlay}>
             <View style={styles.content}>
               <TextSubheading style={styles.title}>{title}</TextSubheading>
-              <TextCaption style={styles.duration}>{duration}</TextCaption>
+              <TextCaption style={styles.duration}>{duration}</TextCaption>\
             </View>
             <View style={styles.playButton}>
-              <Play size={20} color={Colors.background.primary} />
+              <AntDesign name="caretright" size={24} color={themes.light.box} />
             </View>
           </View>
         </ImageBackground>
@@ -64,15 +65,20 @@ export default function MeditationCard({
 
 const styles = StyleSheet.create({
   card: {
-    height: 180,
+    height: 100,
+    width: 300,  
     borderRadius: Layout.borderRadius.lg,
     overflow: 'hidden',
     marginBottom: Layout.spacing.md,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
+    shadowColor: themes.light.textPrimary,
+    shadowOffset: {
+	  width: 0,
+	  height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
     elevation: 4,
+    
   },
   imageBackground: {
     width: '100%',
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     flexDirection: 'row',
     alignItems: 'flex-end',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between', 
   },
   content: {
     flex: 1,
@@ -101,10 +107,10 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   playButton: {
-    width: 40,
-    height: 40,
-    borderRadius: Layout.borderRadius.full,
-    backgroundColor: Colors.primary.default,
+    width: 60,
+    height: 60,
+    backgroundColor: themes.light.button1,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },

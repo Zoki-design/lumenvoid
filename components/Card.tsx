@@ -1,6 +1,7 @@
 import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
+import { themes } from '@/constants/Colours';
 
 interface CardProps {
   children: React.ReactNode;
@@ -15,11 +16,11 @@ export default function Card({
   style,
   onPress,
   elevation = 'low',
-  backgroundColor = Colors.background.primary,
+  backgroundColor = themes.light.box,
 }: CardProps) {
   const cardStyles = [
     styles.card,
-    styles[`elevation${elevation.charAt(0).toUpperCase() + elevation.slice(1)}`],
+    styles[`elevation${elevation.charAt(0).toUpperCase() + elevation.slice(1)}` as keyof typeof styles],
     { backgroundColor },
     style,
   ];

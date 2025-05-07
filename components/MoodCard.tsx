@@ -1,24 +1,24 @@
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { TextBody, TextCaption } from './StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import Animated, { 
-  useAnimatedStyle, 
-  withTiming, 
-  useSharedValue, 
-  withSequence, 
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+  useSharedValue,
+  withSequence,
 } from 'react-native-reanimated';
 
 interface MoodCardProps {
-  emoji: string;
+  image: any; // require() image or valid source
   label: string;
   selected?: boolean;
   onPress: () => void;
 }
 
-export default function MoodCard({ emoji, label, selected = false, onPress }: MoodCardProps) {
+export default function MoodCard({ image, label, selected = false, onPress }: MoodCardProps) {
   const scale = useSharedValue(1);
-  
+
   const handlePress = () => {
     scale.value = withSequence(
       withTiming(0.95, { duration: 100 }),
@@ -37,12 +37,13 @@ export default function MoodCard({ emoji, label, selected = false, onPress }: Mo
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
       <Animated.View style={[
-        styles.card, 
+        styles.card,
         selected ? styles.selected : {},
         animatedStyle
       ]}>
         <View style={styles.emojiContainer}>
-          <TextBody style={styles.emoji}>{emoji}</TextBody>
+          {/* Use require() for local images */}
+          <Image source={image} style={styles.image} resizeMode="contain" />
         </View>
         <TextCaption style={[
           styles.label,
@@ -57,7 +58,7 @@ export default function MoodCard({ emoji, label, selected = false, onPress }: Mo
 
 const styles = StyleSheet.create({
   card: {
-    width: 80,
+    width: 90,
     alignItems: 'center',
     padding: Layout.spacing.sm,
     backgroundColor: Colors.background.secondary,
@@ -70,8 +71,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.light + '20', // 20% opacity
   },
   emojiContainer: {
-    width: 48,
-    height: 48,
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.background.primary,
@@ -83,8 +84,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  emoji: {
-    fontSize: 24,
+  image: {
+    width: 40,
+    height: 40,
   },
   label: {
     textAlign: 'center',

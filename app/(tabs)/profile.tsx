@@ -1,6 +1,8 @@
 import { View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextTitle, TextSubheading, TextBody, TextCaption } from '@/components/StyledText';
+import { themes } from '@/constants/Colours';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
 import Card from '@/components/Card';
@@ -79,14 +81,14 @@ export default function ProfileScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.headerTop}>
-            <TextTitle>Profile</TextTitle>
+            <TextTitle style={styles.title}> Account </TextTitle>
             <Animated.View style={settingsAnimatedStyle}>
-              <TouchableOpacity 
-                style={styles.settingsButton}
-                onPress={handlePressSettings}
-              >
-                <Settings size={24} color={Colors.text.primary} />
-              </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={handlePressSettings} 
+              style={styles.iconButtons}
+            >
+              <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
+            </TouchableOpacity>
             </Animated.View>
           </View>
 
@@ -97,15 +99,15 @@ export default function ProfileScreen() {
                 activeOpacity={0.9}
               >
                 <Image 
-                  source={{ uri: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' }} 
+                  source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7oBex_gwatjeJ1D1ZX3mVXEQujKe8qPYwzg&s' }} 
                   style={styles.profileImage} 
                 />
               </TouchableOpacity>
             </Animated.View>
             
             <View style={styles.profileInfo}>
-              <TextSubheading style={styles.profileName}>Alex Johnson</TextSubheading>
-              <TextCaption style={styles.profileEmail}>alex.johnson@example.com</TextCaption>
+              <TextSubheading style={styles.profileName}>Ur mom Gay</TextSubheading>
+              <TextCaption style={styles.profileEmail}>ID:1546542545456</TextCaption>
               <Button 
                 title="Edit Profile" 
                 variant="outline" 
@@ -118,9 +120,9 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.section}>
-          <TextSubheading style={styles.sectionTitle}>Your Progress</TextSubheading>
+          <TextTitle style={styles.title}> Records </TextTitle>
           
-          {progressStats.map((stat) => (
+          {/* {progressStats.map((stat) => (
             <ProgressCard
               key={stat.id}
               title={stat.title}
@@ -129,7 +131,7 @@ export default function ProfileScreen() {
               unit={stat.unit}
               description={stat.description}
             />
-          ))}
+          ))} */}
         </View>
 
         <Card style={styles.menuCard}>
@@ -154,27 +156,7 @@ export default function ProfileScreen() {
           )}
         </Card>
 
-        <Card style={styles.menuCard}>
-          <TextSubheading style={styles.menuTitle}>Settings</TextSubheading>
-          
-          {renderMenuItem(
-            <BellRing size={20} color={Colors.primary.default} />,
-            'Notifications',
-            'Manage your notifications'
-          )}
-          
-          {renderMenuItem(
-            <ShieldCheck size={20} color={Colors.primary.default} />,
-            'Privacy',
-            'Update privacy settings'
-          )}
-          
-          {renderMenuItem(
-            <HelpCircle size={20} color={Colors.primary.default} />,
-            'Help & Support',
-            'Get assistance and FAQ'
-          )}
-        </Card>
+        
 
         <Button
           title="Log Out"
@@ -190,7 +172,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.secondary,
+    backgroundColor: themes.light.background,
   },
   header: {
     backgroundColor: Colors.background.primary,
@@ -218,6 +200,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.tertiary,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    color: themes.light.textPrimary,
+    fontSize: 16,
+    marginTop: 10,
   },
   profileSection: {
     flexDirection: 'row',
@@ -286,4 +273,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Layout.spacing.lg,
     marginBottom: Layout.spacing.xl,
   },
+  iconButtons: {
+  },
+
 });
