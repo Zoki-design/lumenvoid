@@ -1,21 +1,24 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { TextTitle, TextSubheading, TextBody, TextCaption } from '@/components/StyledText';
+import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList, Text, TextInput, Image } from 'react-native';
+import { TextTitle } from '@/components/StyledText';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Colors from '@/constants/Colors';
+import { themes } from '@/constants/Colours';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Layout from '@/constants/Layout';
-import Card from '@/components/Card';
-import Button from '@/components/Button';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MoodCard from '@/components/MoodCard';
 import MeditationCard from '@/components/MeditationCard';
-import ProgressCard from '@/components/ProgressCard';
 import { useState } from 'react';
-import { Bell, ArrowRight } from 'lucide-react-native';
+import Box from '@/components/Box'; 
 import { moods, meditations, progressStats } from '@/assets/data/mockData';
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
   withSpring,
 } from 'react-native-reanimated';
+
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -27,6 +30,21 @@ export default function HomeScreen() {
     });
   };
 
+  const router = useRouter();
+
+  const handleAddTodo = () => {
+    handlePressBell();
+    router.push('/today/todo');
+    console.log('Logged To Do',);
+  };
+
+  const handleAddToday = () => {
+    handlePressBell();
+    router.push('/today/today');
+    console.log('Logged Today',);
+  }
+  
+
   const bellAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: bellScale.value }],
@@ -35,7 +53,7 @@ export default function HomeScreen() {
 
   const renderMoodItem = ({ item }: { item: typeof moods[0] }) => (
     <MoodCard
-      emoji={item.emoji}
+      image={item.image}
       label={item.label}
       selected={selectedMood === item.id}
       onPress={() => setSelectedMood(item.id)}
@@ -47,23 +65,27 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
-            <TextCaption style={styles.greeting}>Good morning</TextCaption>
-            <TextTitle>Alex</TextTitle>
+            <TextTitle style={styles.title}>Week</TextTitle>
           </View>
           
-          <TouchableOpacity 
-            onPress={handlePressBell} 
-            style={styles.notificationButton}
-          >
-            <Animated.View style={bellAnimatedStyle}>
-              <Bell size={24} color={Colors.text.primary} />
-            </Animated.View>
-          </TouchableOpacity>
+          <View style={styles.flex}>
+            <TouchableOpacity 
+              onPress={handlePressBell} 
+              style={styles.iconButtons}
+            >
+              <Ionicons name="notifications" size={24} color={themes.light.textSecondary}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              onPress={handlePressBell} 
+              style={styles.iconButtons}
+            >
+              <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View style={styles.moodTrackerSection}>
-          <TextSubheading style={styles.sectionTitle}>How are you feeling today?</TextSubheading>
-          
+        <Box style={styles.moodTrackerSection}>
           <FlatList
             data={moods}
             renderItem={renderMoodItem}
@@ -71,71 +93,170 @@ export default function HomeScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.moodList}
-            ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
           />
-          
-          <Button 
-            title="Track Your Mood" 
-            onPress={() => console.log('Track mood')} 
-            fullWidth
-            style={styles.trackButton}
-          />
-        </View>
+        </Box>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <TextSubheading style={styles.sectionTitle}>Daily Recommendation</TextSubheading>
+            <TextTitle style={styles.title}>Today</TextTitle>
+            <View style={styles.flex}>
+              <TouchableOpacity 
+                onPress={handleAddToday} 
+                style={styles.iconButtons}
+              >
+                <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={handlePressBell} 
+                style={styles.iconButtons}
+              >
+                <FontAwesome6 name="trash" size={17} color={themes.light.textSecondary} />
+              </TouchableOpacity>
+            </View>
           </View>
-          
-          <MeditationCard
-            title="Anxiety Relief"
-            duration="15 min"
-            imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            onPress={() => console.log('Open meditation')}
-          />
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <TextSubheading style={styles.sectionTitle}>Your Progress</TextSubheading>
-            <TouchableOpacity style={styles.viewAllButton}>
-              <TextCaption style={styles.viewAllText}>View All</TextCaption>
-              <ArrowRight size={16} color={Colors.primary.default} />
-            </TouchableOpacity>
-          </View>
-          
-          {progressStats.map((stat) => (
-            <ProgressCard
-              key={stat.id}
-              title={stat.title}
-              value={stat.value}
-              target={stat.target}
-              unit={stat.unit}
-              description={stat.description}
+          <Box style={{ width: '100%', height: 90 }}>
+            <Image style={styles.icons}
+              source={require('@/assets/icons/happy1.png')}/>
+            <View style={styles.dateContainer}>
+              <Text style={{ color: themes.light.box }}>15 Tue</Text>
+            </View>
+            <View style={styles.line} />
+            <TextInput
+              placeholder="How do you feel today?"
+              style={styles.TodayInput}
+              placeholderTextColor={themes.light.textSecondary}
+              keyboardType="default"
             />
-          ))}
+            <Image style={styles.focusIcon}
+            source={require('@/assets/icons/lotus 1.png')}/>
+          </Box>
+        
+
+          <Box style={styles.toDoList}>
+            <View style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            }}>
+              <Text style={styles.Todo}>To-Do:</Text>
+              <TouchableOpacity onPress={handleAddTodo}> 
+                <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} /> 
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleAddTodo} style={styles.plusIcon}>
+                <FontAwesome5 name="plus" size={50} color={themes.light.accent} />
+              </TouchableOpacity>
+            </View>
+          </Box>
         </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <TextSubheading style={styles.sectionTitle}>Daily Affirmation</TextSubheading>
+            <TextTitle style={styles.title}>Daily Affirmation</TextTitle>
           </View>
-          
-          <Card style={styles.affirmationCard} elevation="medium">
-            <TextBody style={styles.affirmationText}>
-              "I am worthy of love and respect. I embrace my strengths and accept my imperfections."
-            </TextBody>
-          </Card>
+          <TextInput
+          placeholder="Today I feel greatful for..."
+          placeholderTextColor={themes.light.textSecondary}
+          style={styles.greatfulInput}
+          keyboardType="default"
+          />
+        </View>
+
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <TextTitle style={styles.title}>Meditation</TextTitle>
+          </View>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <View style={{ flexDirection: 'row', gap: 20}}>
+              <MeditationCard
+              title="Anxiety Relief"
+              duration="15 min"
+              imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              onPress={() => console.log('Open meditation')}
+              />
+              <MeditationCard
+              title="Mindful Breathing"
+              duration="10 min"
+              imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              onPress={() => console.log('Open mindful breathing')}
+              />
+              <MeditationCard
+              title="Meditation for mornings"
+              duration="20 min"
+              imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg?w=800&h=450&c=crop"
+              onPress={() => console.log('Open mindful breathing')}
+              />
+              <MeditationCard
+              title="40 Minute Pomodoro for Studying"
+              duration="45 min"
+              imageUrl="https://d15q5g7ipjper4.cloudfront.net/blog/wp-content/uploads/2022/09/pexels-charlotte-may-5965839.jpeg"
+              onPress={() => console.log('Open mindful breathing')}
+              />
+            </View>
+          </ScrollView>
+            <TextTitle style={styles.title}>Quick Tips</TextTitle>
+            <Box style={styles.tips}>
+              <Text>How to set boundaries...</Text>
+            </Box>
+            <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20, gap: 10}}>
+               <Box style={styles.wisdomBox}>
+                <Text style={styles.wisdomDate}>April 15</Text>
+                <Text style={styles.wisdomText}>
+                Don’t say yes to everything - you may be reaching the burnout.
+                </Text>
+                <Image source={require('@/assets/icons/crystal-ball (1).png')} style={styles.magicBall} />
+               </Box>
+            </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: themes.light.background,
     flex: 1,
-    backgroundColor: Colors.background.secondary,
+  },
+  dateContainer: {
+    top: 45,
+    width: 55,
+    height: 20,
+    alignItems: 'center',
+    borderRadius: 10,
+    position: 'relative',
+    backgroundColor: themes.light.textPrimary,
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 20,
+    marginTop: 10,
+  },
+  focusIcon: {
+    height: 40,
+    width: 40,
+    position: 'absolute',
+    top: 25,
+    left: 310,
+  },
+  greatfulInput: {
+    height: 50,
+    width: '100%',
+    backgroundColor: themes.light.box,
+    borderRadius: 10,
+    paddingHorizontal: Layout.spacing.md,
+    color: themes.light.textPrimary,
+    shadowColor: themes.light.textPrimary,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
   header: {
     flexDirection: 'row',
@@ -144,34 +265,52 @@ const styles = StyleSheet.create({
     paddingHorizontal: Layout.spacing.lg,
     paddingVertical: Layout.spacing.md,
   },
-  greeting: {
-    color: Colors.text.secondary,
+  iconButtons: {},
+  icons: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    top: 10,
+    left: 15,
   },
-  notificationButton: {
-    width: 40,
-    height: 40,
-    borderRadius: Layout.borderRadius.full,
-    backgroundColor: Colors.background.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+  line: {
+    width: 4,
+    height: 70,
+    backgroundColor: '#D4D3DF',
+    borderRadius: 10,
+    position: 'relative',
+    left: 70,
+    top: -25,
+  },
+  magicBall: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: 70,
+    left: 310,
+  },
+  meditation: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 20,
+  },
+  moodList: {
+    paddingVertical: Layout.spacing.md,
   },
   moodTrackerSection: {
-    backgroundColor: Colors.background.primary,
-    paddingHorizontal: Layout.spacing.lg,
-    paddingVertical: Layout.spacing.lg,
-    borderRadius: Layout.borderRadius.lg,
-    margin: Layout.spacing.lg,
-    marginTop: Layout.spacing.md,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
+    width: 370,
+    height: 150,
+    marginLeft: 20,
+    marginRight: 20,
+    borderRadius: 10,
+  },
+  plusIcon: {
+    left: 120,
+    top: 60,
+    position: 'absolute',
+    borderRadius: 10,
+    padding: 5,
+    marginLeft: 20,
   },
   section: {
     paddingHorizontal: Layout.spacing.lg,
@@ -183,11 +322,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Layout.spacing.md,
   },
-  sectionTitle: {
-    color: Colors.text.primary,
+  sectionTitle: {},
+  tips: {
+    height: 150,
+    width: '100%',
   },
-  moodList: {
-    paddingVertical: Layout.spacing.md,
+  title: {
+    color: themes.light.textPrimary,
+    fontSize: 16,
+    marginTop: 10,
+  },
+  TodayInput: {
+    position: 'absolute',
+    fontSize: 13,
+    zIndex: 1,
+    left: 100,
+  },
+  toDoList: {
+    marginTop: 20,
+    height: 200,
+    width: '100%',
+  },
+  Todo: {
+    fontWeight: 'bold',
+    color: themes.light.textPrimary,
+  },
+  todaysMood: {
+    height: 80,
+    width: '100%',
+    backgroundColor: themes.light.box,
+    borderRadius: 10,
+    shadowColor: themes.light.textPrimary,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
   trackButton: {
     marginTop: Layout.spacing.md,
@@ -197,17 +369,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewAllText: {
-    color: Colors.primary.default,
     marginRight: Layout.spacing.xs,
   },
-  affirmationCard: {
-    backgroundColor: Colors.primary.light + '20', // 20% opacity
-    borderLeftWidth: 4,
-    borderLeftColor: Colors.primary.default,
+  wisdomBox: {
+    height: 125,
+    width: 370,
+    backgroundColor: themes.light.textSecondary,
   },
-  affirmationText: {
-    fontStyle: 'italic',
-    lineHeight: 24,
-    textAlign: 'center',
+  wisdomDate: {
+    color: themes.light.accent,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  wisdomText: {
+    width: 250,
+    color: themes.light.box,
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: 10,
   },
 });

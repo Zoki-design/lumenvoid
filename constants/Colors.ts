@@ -46,12 +46,12 @@ export default {
   },
   text: {
     primary: '#25262E',
-    secondary: '#6E7287',
+    secondary: '#4A4964',
     tertiary: '#9295AB',
     inverse: '#FFFFFF',
   },
   background: {
-    primary: '#FFFFFF',
+    primary: '#F1EEF5',
     secondary: '#F9F9FB',
     tertiary: '#F4F4F8',
   },
