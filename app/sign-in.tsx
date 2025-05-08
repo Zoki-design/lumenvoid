@@ -20,7 +20,7 @@ export default function SignInScreen() {
   
     try {
       // Example: Simple local validation
-      if (email === 'batzorig23f@gmail.com' && password === 'zoki222222') {
+      if (email === 'test@gmail.com' && password === 'test1234') {
         setLoading(false);
         router.replace('/(tabs)'); // Navigate to the profile screen
       } else {

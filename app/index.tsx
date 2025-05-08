@@ -10,7 +10,7 @@ export default function WelcomeScreen() {
     <View style={styles.container}>
       <View style={styles.content}>
         <Image
-          source={{ uri: 'https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' }}
+          source={require('@/assets/images/logiin.jpg')}
           style={styles.image}
         />
         <View style={styles.overlay}>
@@ -26,6 +26,9 @@ export default function WelcomeScreen() {
                 variant="primary"
                 fullWidth
                 style={styles.button}
+                onPress={() => {
+                  // handle the button press here
+                }}
               />
             </Link>
             
@@ -35,6 +38,9 @@ export default function WelcomeScreen() {
                 variant="outline"
                 fullWidth
                 style={styles.button}
+                onPress={() => {
+                  // handle the button press here
+                }}
               />
             </Link>
           </View>
