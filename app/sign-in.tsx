@@ -32,7 +32,7 @@ export default function SignInScreen() {
       if (!response.ok) {
         throw new Error(data.error || 'Unknown error');
       }
-
+      
       // Хэрэв амжилттай нэвтэрвэл tab руу шилжинэ
       setLoading(false);
       router.replace('/(tabs)');
