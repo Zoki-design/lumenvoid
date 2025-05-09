@@ -6,6 +6,7 @@ import Card from '@/components/Card';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import Box from '@/components/Box';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function ProfileScreen() {
   );
 
   return (
-    <Box style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
         {/* User Card */}
@@ -67,7 +68,7 @@ export default function ProfileScreen() {
           {renderMenuItem(<HelpCircle size={20} />, 'Useful Links')}
         </Box>
       </ScrollView>
-    </Box>
+    </SafeAreaView>
   );
 }
 

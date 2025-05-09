@@ -5,6 +5,7 @@ import { TextSubheading, TextCaption } from '@/components/StyledText';
 import { ChevronRight } from 'lucide-react-native';
 import Colors from '@/constants/Colors';
 import Box from '@/components/Box';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function SettingsScreen() {
   );
 
   return (
-    <Box style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextCaption style={styles.sectionTitle}>Account</TextCaption>
         {renderItem('Login Information', () => router.back())}
@@ -54,7 +55,7 @@ export default function SettingsScreen() {
         )}
         {renderItem('Sound effect', () => router.back())}
       </ScrollView>
-    </Box>
+    </SafeAreaView>
   );
 }
 

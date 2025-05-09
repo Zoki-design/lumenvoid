@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Link, router } from 'expo-router';
 import { TextTitle, TextBody, TextCaption } from '@/components/StyledText';
 import Colors from '@/constants/Colors';
@@ -8,6 +8,12 @@ import Button from '@/components/Button';
 import { useState } from 'react';
 import { Mail, Lock, User, ArrowLeft } from 'lucide-react-native';
 import axios from 'axios';
+
+// 💡 Set your local IP address here
+const LOCAL_IP = '192.168.88.92'; // <-- Replace with your actual machine IP
+const baseURL = Platform.OS === 'web'
+  ? 'http://localhost:5000'
+  : `http://${LOCAL_IP}:5000`;
 
 export default function SignUpScreen() {
   const [name, setName] = useState('');
@@ -21,14 +27,13 @@ export default function SignUpScreen() {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
+      const response = await axios.post(`${baseURL}/signup`, {
         name,
         email,
         password,
       });
       setLoading(false);
       console.log(response.data.message);
-      // Handle success (e.g., navigate to login screen)
       router.push('/sign-in');
     } catch (err: any) {
       setLoading(false);

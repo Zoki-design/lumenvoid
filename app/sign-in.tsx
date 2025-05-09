@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Link, router } from 'expo-router';
 import { TextTitle, TextBody, TextCaption } from '@/components/StyledText';
 import Colors from '@/constants/Colors';
@@ -7,6 +7,12 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import { useState } from 'react';
 import { Mail, Lock, ArrowLeft } from 'lucide-react-native';
+
+// 💡 Set your local IP address (the one your server runs on)
+const LOCAL_IP = '192.168.88.92'; // ⬅️ Replace with your actual machine IP
+const baseURL = Platform.OS === 'web'
+  ? 'http://localhost:5000'
+  : `http://${LOCAL_IP}:5000`;
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
@@ -17,28 +23,33 @@ export default function SignInScreen() {
   const handleSignIn = async () => {
     setLoading(true);
     setError(null);
-  
+
     try {
-      // Example: Simple local validation
-      if (email === 'test@gmail.com' && password === 'test1234') {
-        setLoading(false);
-        router.replace('/(tabs)'); // Navigate to the profile screen
-      } else {
-        throw new Error('Invalid email or password');
+      const response = await fetch(`${baseURL}/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Unknown error');
       }
+
+      setLoading(false);
+      router.replace('/(tabs)');
     } catch (err: any) {
       setLoading(false);
-      setError(err.message);
+      setError(err.message || 'Login failed');
     }
   };
-  
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <ArrowLeft size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
@@ -48,9 +59,7 @@ export default function SignInScreen() {
           Sign in to continue your journey to mental wellness
         </TextBody>
 
-        {error && (
-          <TextCaption style={styles.error}>{error}</TextCaption>
-        )}
+        {error && <TextCaption style={styles.error}>{error}</TextCaption>}
 
         <Input
           label="Email"

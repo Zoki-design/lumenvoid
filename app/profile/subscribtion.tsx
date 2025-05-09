@@ -5,6 +5,7 @@ import { X } from 'lucide-react-native';
 import Colors from '@/constants/Colors';
 import Box from '@/components/Box';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SubscriptionScreen() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function SubscriptionScreen() {
   );
 
   return (
-    <Box style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TouchableOpacity
           style={styles.closeButton}
@@ -63,7 +64,7 @@ export default function SubscriptionScreen() {
           $34.99 per year after trial, cancel anytime
         </TextCaption>
       </ScrollView>
-    </Box>
+    </SafeAreaView>
   );
 }
 
