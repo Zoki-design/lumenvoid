@@ -44,6 +44,7 @@ export default {
     800: '#393B48',
     900: '#25262E',
   },
+  
   text: {
     primary: '#25262E',
     secondary: '#4A4964',
@@ -58,4 +59,5 @@ export default {
   tabIconDefault: '#9295AB',
   tabIconSelected: '#6949FF',
   shadow: 'rgba(37, 38, 46, 0.08)',
+  border: '#E2E2E2'
 };
