@@ -5,11 +5,13 @@ const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const Todo = require('./models/Todo');
+
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());         // JSON body-г уншина
+app.use(express.json());         
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB URI
@@ -80,6 +82,34 @@ app.post('/signin', async (req, res) => {
     res.status(500).json({ error: 'Серверийн алдаа' });
   }
 });
+
+
+app.get('/todos', async (req, res) => {
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (err) {
+    res.status(500).json({ error: 'Серверийн алдаа' });
+  }
+});
+
+// 🔹 POST /todos - todo нэмэх
+app.post('/todos', async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text || text.trim() === '') {
+      return res.status(400).json({ error: 'Todo хоосон байна' });
+    }
+
+    const newTodo = new Todo({ text });
+    await newTodo.save();
+    res.status(201).json({ message: 'Todo нэмэгдлээ', todo: newTodo });
+  } catch (err) {
+    res.status(500).json({ error: 'Серверийн алдаа' });
+  }
+});
+
+
 
 
 // Server listen
