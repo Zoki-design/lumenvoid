@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import axios from 'axios';
 import { useRouter } from 'expo-router';
+
+const API_URL = 'http://localhost:5000'; // 👉 өөрийн backend IP-г тохируул
 
 export default function TodoScreen() {
   const router = useRouter();
-
   const [tasks, setTasks] = useState<string[]>([]);
   const [input, setInput] = useState('');
 
-  const addTask = () => {
+  const fetchTodos = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/todos`);
+      const todoTexts = res.data.map((todo: any) => todo.text);
+      setTasks(todoTexts);
+    } catch (err) {
+      console.error('❌ Todo татах алдаа:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const addTask = async () => {
     if (input.trim()) {
-      setTasks([...tasks, input]);
-      setInput('');
+      try {
+        await axios.post(`${API_URL}/todos`, { text: input });
+        setInput('');
+        fetchTodos();
+      } catch (err) {
+        console.error('❌ Todo нэмэх алдаа:', err);
+      }
     }
   };
 
