@@ -17,34 +17,28 @@ export default function SignInScreen() {
   const handleSignIn = async () => {
     setLoading(true);
     setError(null);
-
+  
     try {
-      const response = await fetch('http://localhost:5000/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Unknown error');
+      // Example: Simple local validation
+      if (email === 'test@gmail.com' && password === 'test1234') {
+        setLoading(false);
+        router.replace('/(tabs)'); // Navigate to the profile screen
+      } else {
+        throw new Error('Invalid email or password');
       }
-      
-      // Хэрэв амжилттай нэвтэрвэл tab руу шилжинэ
-      setLoading(false);
-      router.replace('/(tabs)');
     } catch (err: any) {
       setLoading(false);
-      setError(err.message || 'Login failed');
+      setError(err.message);
     }
   };
+  
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+      <TouchableOpacity 
+        style={styles.backButton}
+        onPress={() => router.back()}
+      >
         <ArrowLeft size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
@@ -54,7 +48,9 @@ export default function SignInScreen() {
           Sign in to continue your journey to mental wellness
         </TextBody>
 
-        {error && <TextCaption style={styles.error}>{error}</TextCaption>}
+        {error && (
+          <TextCaption style={styles.error}>{error}</TextCaption>
+        )}
 
         <Input
           label="Email"
