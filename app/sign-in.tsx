@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform, KeyboardAvoidingView, Alert } from 'react-native';
 import { Link, router } from 'expo-router';
 import { TextTitle, TextBody, TextCaption } from '@/components/StyledText';
 import Colors from '@/constants/Colors';
@@ -8,8 +8,7 @@ import Button from '@/components/Button';
 import { useState } from 'react';
 import { Mail, Lock, ArrowLeft } from 'lucide-react-native';
 
-// 💡 Set your local IP address (the one your server runs on)
-const LOCAL_IP = '192.168.88.92'; // ⬅️ Replace with your actual machine IP
+const LOCAL_IP = '192.168.88.92'; // Make sure this matches your server's IP
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;
@@ -21,8 +20,14 @@ export default function SignInScreen() {
   const [error, setError] = useState<string | null>(null);
 
   const handleSignIn = async () => {
-    setLoading(true);
     setError(null);
+
+    if (!email || !password) {
+      setError('Please enter both email and password');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch(`${baseURL}/signin`, {
@@ -36,19 +41,23 @@ export default function SignInScreen() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Unknown error');
+        throw new Error(data.error || 'Sign-in failed');
       }
 
-      setLoading(false);
       router.replace('/(tabs)');
     } catch (err: any) {
+      console.error('❌ Sign-in error:', err.message);
+      setError(err.message || 'Unable to sign in');
+    } finally {
       setLoading(false);
-      setError(err.message || 'Login failed');
     }
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <ArrowLeft size={24} color={Colors.text.primary} />
       </TouchableOpacity>
@@ -67,6 +76,7 @@ export default function SignInScreen() {
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
+          autoCapitalize="none"
           leftIcon={<Mail size={20} color={Colors.text.tertiary} />}
         />
 
@@ -96,7 +106,7 @@ export default function SignInScreen() {
           </Link>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

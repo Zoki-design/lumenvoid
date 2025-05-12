@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform, KeyboardAvoidingView, Alert } from 'react-native';
 import { Link, router } from 'expo-router';
 import { TextTitle, TextBody, TextCaption } from '@/components/StyledText';
 import Colors from '@/constants/Colors';
@@ -9,8 +9,7 @@ import { useState } from 'react';
 import { Mail, Lock, User, ArrowLeft } from 'lucide-react-native';
 import axios from 'axios';
 
-// 💡 Set your local IP address here
-const LOCAL_IP = '192.168.88.92'; // <-- Replace with your actual machine IP
+const LOCAL_IP = '192.168.88.92'; // 👈 Replace with your real IP
 const baseURL = Platform.OS === 'web'
   ? 'http://localhost:5000'
   : `http://${LOCAL_IP}:5000`;
@@ -23,8 +22,24 @@ export default function SignUpScreen() {
   const [error, setError] = useState<string | null>(null);
 
   const handleSignUp = async () => {
-    setLoading(true);
     setError(null);
+
+    if (!name || !email || !password) {
+      setError('Please fill out all fields');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      setError('Enter a valid email address');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await axios.post(`${baseURL}/signup`, {
@@ -32,21 +47,24 @@ export default function SignUpScreen() {
         email,
         password,
       });
-      setLoading(false);
-      console.log(response.data.message);
+
+      console.log('✅ Signup success:', response.data.message);
+      Alert.alert('Success', 'Account created. Please sign in.');
       router.push('/sign-in');
     } catch (err: any) {
+      console.error('❌ Signup error:', err?.response?.data || err.message);
+      setError(err?.response?.data?.error || 'Signup failed. Please try again.');
+    } finally {
       setLoading(false);
-      setError(err.response?.data?.error || 'Something went wrong');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity 
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <ArrowLeft size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
@@ -56,9 +74,7 @@ export default function SignUpScreen() {
           Join our community and start your wellness journey
         </TextBody>
 
-        {error && (
-          <TextCaption style={styles.error}>{error}</TextCaption>
-        )}
+        {error && <TextCaption style={styles.error}>{error}</TextCaption>}
 
         <Input
           label="Name"
@@ -74,6 +90,8 @@ export default function SignUpScreen() {
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
           leftIcon={<Mail size={20} color={Colors.text.tertiary} />}
         />
 
@@ -103,7 +121,7 @@ export default function SignUpScreen() {
           </Link>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
