@@ -1,28 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Alert, Modal } from 'react-native';
 import axios from 'axios';
 import { useRouter } from 'expo-router';
 
-// Update the API_URL for Android (replace with your computer's IP address for physical devices or 10.0.2.2 for Android emulators)
-const API_URL = 'http://192.168.88.92:5000'; // For Android emulator, use this for localhost
+const API_URL = 'http://192.168.88.92:5000';
+
+interface Todo {
+  _id: string;
+  text: string;
+  createdAt: string;
+  completed: boolean;
+}
 
 export default function TodoScreen() {
   const router = useRouter();
-  const [tasks, setTasks] = useState<string[]>([]);
-  const [input, setInput] = useState('');
+  const [tasks, setTasks] = useState<Todo[]>([]);
+  const [input, setInput] = useState<string>('');
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [editText, setEditText] = useState<string>('');
+  const [editTodoId, setEditTodoId] = useState<string>('');
 
   const fetchTodos = async () => {
     try {
       const res = await axios.get(`${API_URL}/todos`);
-      const todoTexts = res.data.map((todo: any) => todo.text);
-      setTasks(todoTexts);
+      setTasks(res.data);
     } catch (err) {
-      console.error('❌ Todo татах алдаа:', err);
+      console.error('❌ Error fetching todos:', err);
     }
   };
 
   useEffect(() => {
     fetchTodos();
+    const interval = setInterval(() => {
+      setTasks((prevTasks) => [...prevTasks]);
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const addTask = async () => {
@@ -32,14 +45,92 @@ export default function TodoScreen() {
         setInput('');
         fetchTodos();
       } catch (err) {
-        console.error('❌ Todo нэмэх алдаа:', err);
+        console.error('❌ Error adding todo:', err);
       }
     }
   };
 
-  const renderItem = ({ item, index }: { item: string; index: number }) => (
+  const editTask = (id: string, currentText: string) => {
+    setEditText(currentText);
+    setEditTodoId(id);
+    setModalVisible(true);
+  };
+
+  const saveEditedTask = async () => {
+    if (editText.trim() !== '') {
+      try {
+        await axios.put(`${API_URL}/todos/${editTodoId}`, { text: editText });
+        fetchTodos();
+        setModalVisible(false);
+      } catch (err) {
+        console.error('❌ Error editing todo:', err);
+      }
+    } else {
+      Alert.alert('Error', 'Todo text cannot be empty!');
+    }
+  };
+
+  const toggleComplete = async (id: string, completed: boolean) => {
+    try {
+      await axios.put(`${API_URL}/todos/${id}`, { completed: !completed });
+      fetchTodos();
+    } catch (err) {
+      console.error('❌ Error toggling completion:', err);
+    }
+  };
+
+  const deleteTask = (id: string) => {
+    Alert.alert('Delete Todo', 'Are you sure you want to delete this todo?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await axios.delete(`${API_URL}/todos/${id}`);
+            fetchTodos();
+          } catch (err) {
+            console.error('❌ Error deleting todo:', err);
+          }
+        },
+      },
+    ]);
+  };
+
+  const timeAgo = (createdAt: string) => {
+    const createdDate = new Date(createdAt);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - createdDate.getTime()) / 1000);
+
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(diffInSeconds / 3600);
+    const days = Math.floor(diffInSeconds / (3600 * 24));
+
+    if (minutes < 1) return 'Just now';
+    if (minutes === 1) return '1 minute ago';
+    if (minutes < 60) return `${minutes} minutes ago`;
+    if (hours < 24) return `${hours} hours ago`;
+    return `${days} days ago`;
+  };
+
+  const renderItem = ({ item }: { item: Todo }) => (
     <View style={styles.taskItem}>
-      <Text style={styles.taskText}>{index + 1}. {item}</Text>
+      <Text style={[styles.taskText, item.completed && styles.completedText]}>{item.text}</Text>
+      <Text style={styles.timeAgo}>{timeAgo(item.createdAt)}</Text>
+
+      <View style={styles.buttonRow}>
+        <TouchableOpacity onPress={() => editTask(item._id, item.text)}>
+          <Text style={styles.editButton}>Edit</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => deleteTask(item._id)}>
+          <Text style={styles.deleteButton}>Delete</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => toggleComplete(item._id, item.completed)}>
+          <Text style={styles.completeButton}>{item.completed ? 'Undo' : 'Complete'}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -63,13 +154,32 @@ export default function TodoScreen() {
       <FlatList
         data={tasks}
         renderItem={renderItem}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
       />
 
       <TouchableOpacity onPress={() => router.push('/(tabs)')}>
         <Text style={styles.goBack}>← Back to Home</Text>
       </TouchableOpacity>
+
+      <Modal visible={isModalVisible} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Edit Todo</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={editText}
+              onChangeText={setEditText}
+            />
+            <TouchableOpacity onPress={saveEditedTask} style={styles.saveButton}>
+              <Text style={styles.saveButtonText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.cancelButton}>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -116,6 +226,29 @@ const styles = StyleSheet.create({
   taskText: {
     fontSize: 16,
   },
+  completedText: {
+    textDecorationLine: 'line-through',
+    color: 'gray',
+  },
+  timeAgo: {
+    color: '#777',
+    fontSize: 12,
+    marginTop: 5,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 5,
+  },
+  editButton: {
+    color: 'blue',
+  },
+  deleteButton: {
+    color: 'red',
+  },
+  completeButton: {
+    color: 'green',
+  },
   list: {
     paddingBottom: 20,
   },
@@ -123,5 +256,52 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: '#007AFF',
     fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 8,
+    width: '80%',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
+  },
+  saveButton: {
+    backgroundColor: '#4CAF50',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#f44336',
+    borderRadius: 8,
+    padding: 10,
+  },
+  cancelButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

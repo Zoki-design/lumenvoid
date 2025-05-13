@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   sleepQuality: {
-    width: 365,
+    width: '100%',	
     height: 120,
     marginRight: 20,
     borderRadius: 10, 

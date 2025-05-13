@@ -121,6 +121,35 @@ app.post('/todos', async (req, res) => {
   }
 });
 
+// DELETE Todo
+app.delete('/todos/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findByIdAndDelete(req.params.id);
+    if (!todo) {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+    res.json({ message: 'Todo deleted' });
+  } catch (err) {
+    console.error('❌ Delete Todo error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT Todo (Edit)
+app.put('/todos/:id', async (req, res) => {
+  const { text } = req.body;
+  try {
+    const todo = await Todo.findByIdAndUpdate(req.params.id, { text }, { new: true });
+    if (!todo) {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+    res.json({ message: 'Todo updated', todo });
+  } catch (err) {
+    console.error('❌ Edit Todo error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
