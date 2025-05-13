@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   wisdomBox: {
     height: 125,
     width: 370,
-    backgroundColor: themes.light.textSecondary,
+    backgroundColor: themes.light.button1,
   },
   wisdomDate: {
     color: themes.light.accent,

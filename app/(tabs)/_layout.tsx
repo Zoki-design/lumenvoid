@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { BackHandler, StyleSheet } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import { themes } from '@/constants/Colours';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -11,11 +11,10 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: themes.light.textPrimary,
+        tabBarActiveTintColor: themes.light.button1,
         tabBarInactiveTintColor: themes.light.textTertiary,
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,
-        tabBarIconStyle: styles.tabBarIcon,
         headerShown: false,
       }}
     >
@@ -40,12 +39,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="aibuddy"
         options={{
-          title: 'AI',
+          title: '',
           tabBarIcon: ({ color, size }) => (
-            <PencilLine size={size} color={color} />
-          ),
+          <View style={styles.aibuddyIconWrapper}>
+            <FontAwesome name="paw" size={45} color="white" />
+          </View>
+        ),
         }}
       />
+
       <Tabs.Screen
         name="calendar"
         options={{
@@ -79,7 +81,13 @@ const styles = StyleSheet.create({
     fontFamily: 'PlusJakartaSans-Medium',
     fontSize: 12,
   },
-  tabBarIcon: {
-    marginTop: 2,
+  aibuddyIconWrapper: {
+    backgroundColor: themes.light.button1,
+    alignItems: 'center',
+    height: 70,
+    width: 70,  
+    padding: 10,
+    borderRadius: 50,
+    marginTop: -22,
   },
 });
