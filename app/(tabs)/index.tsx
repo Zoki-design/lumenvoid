@@ -11,11 +11,11 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MoodCard from '@/components/MoodCard';
 import MeditationCard from '@/components/MeditationCard';
 import { useState } from 'react';
-import Box from '@/components/Box'; 
+import Box from '@/components/Box';
 import { moods, meditations, progressStats } from '@/assets/data/mockData';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
 
@@ -43,7 +43,7 @@ export default function HomeScreen() {
     router.push('/today/today');
     console.log('Logged Today',);
   }
-  
+
 
   const bellAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -67,17 +67,17 @@ export default function HomeScreen() {
           <View>
             <TextTitle style={styles.title}>Week</TextTitle>
           </View>
-          
+
           <View style={styles.flex}>
-            <TouchableOpacity 
-              onPress={handlePressBell} 
+            <TouchableOpacity
+              onPress={handlePressBell}
               style={styles.iconButtons}
             >
-              <Ionicons name="notifications" size={24} color={themes.light.textSecondary}/>
+              <Ionicons name="notifications" size={24} color={themes.light.textSecondary} />
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              onPress={handlePressBell} 
+            <TouchableOpacity
+              onPress={handlePressBell}
               style={styles.iconButtons}
             >
               <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
@@ -101,14 +101,14 @@ export default function HomeScreen() {
           <View style={styles.sectionHeader}>
             <TextTitle style={styles.title}>Today</TextTitle>
             <View style={styles.flex}>
-              <TouchableOpacity 
-                onPress={handleAddToday} 
+              <TouchableOpacity
+                onPress={handleAddToday}
                 style={styles.iconButtons}
               >
                 <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
               </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={handlePressBell} 
+              <TouchableOpacity
+                onPress={handlePressBell}
                 style={styles.iconButtons}
               >
                 <FontAwesome6 name="trash" size={17} color={themes.light.textSecondary} />
@@ -117,7 +117,7 @@ export default function HomeScreen() {
           </View>
           <Box style={{ width: '100%', height: 90 }}>
             <Image style={styles.icons}
-              source={require('@/assets/icons/happy1.png')}/>
+              source={require('@/assets/icons/happy1.png')} />
             <View style={styles.dateContainer}>
               <Text style={{ color: themes.light.box }}>15 Tue</Text>
             </View>
@@ -129,20 +129,20 @@ export default function HomeScreen() {
               keyboardType="default"
             />
             <Image style={styles.focusIcon}
-            source={require('@/assets/icons/lotus 1.png')}/>
+              source={require('@/assets/icons/lotus 1.png')} />
           </Box>
-        
+
 
           <Box style={styles.toDoList}>
             <View style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}>
               <Text style={styles.Todo}>To-Do:</Text>
-              <TouchableOpacity onPress={handleAddTodo}> 
-                <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} /> 
+              <TouchableOpacity onPress={handleAddTodo}>
+                <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
               </TouchableOpacity>
               <TouchableOpacity onPress={handleAddTodo} style={styles.plusIcon}>
                 <FontAwesome5 name="plus" size={50} color={themes.light.accent} />
@@ -156,10 +156,10 @@ export default function HomeScreen() {
             <TextTitle style={styles.title}>Daily Affirmation</TextTitle>
           </View>
           <TextInput
-          placeholder="Today I feel greatful for..."
-          placeholderTextColor={themes.light.textSecondary}
-          style={styles.greatfulInput}
-          keyboardType="default"
+            placeholder="Today I feel greatful for..."
+            placeholderTextColor={themes.light.textSecondary}
+            style={styles.greatfulInput}
+            keyboardType="default"
           />
         </View>
 
@@ -168,46 +168,46 @@ export default function HomeScreen() {
             <TextTitle style={styles.title}>Meditation</TextTitle>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{ flexDirection: 'row', gap: 20}}>
+            <View style={{ flexDirection: 'row', gap: 20 }}>
               <MeditationCard
-              title="Anxiety Relief"
-              duration="15 min"
-              imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              onPress={() => console.log('Open meditation')}
+                title="Anxiety Relief"
+                duration="15 min"
+                imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
               />
               <MeditationCard
-              title="Mindful Breathing"
-              duration="10 min"
-              imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              onPress={() => console.log('Open mindful breathing')}
+                title="Mindful Breathing"
+                duration="10 min"
+                imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
               />
               <MeditationCard
-              title="Meditation for mornings"
-              duration="20 min"
-              imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg?w=800&h=450&c=crop"
-              onPress={() => console.log('Open mindful breathing')}
+                title="Meditation for mornings"
+                duration="20 min"
+                imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg?w=800&h=450&c=crop"
+                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
               />
               <MeditationCard
-              title="40 Minute Pomodoro for Studying"
-              duration="45 min"
-              imageUrl="https://d15q5g7ipjper4.cloudfront.net/blog/wp-content/uploads/2022/09/pexels-charlotte-may-5965839.jpeg"
-              onPress={() => console.log('Open mindful breathing')}
+                title="40 Minute Pomodoro for Studying"
+                duration="45 min"
+                imageUrl="https://d15q5g7ipjper4.cloudfront.net/blog/wp-content/uploads/2022/09/pexels-charlotte-may-5965839.jpeg"
+                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
               />
             </View>
           </ScrollView>
-            <TextTitle style={styles.title}>Quick Tips</TextTitle>
-            <Box style={styles.tips}>
-              <Text>How to set boundaries...</Text>
-            </Box>
-            <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20, gap: 10}}>
-               <Box style={styles.wisdomBox}>
-                <Text style={styles.wisdomDate}>April 15</Text>
-                <Text style={styles.wisdomText}>
+          <TextTitle style={styles.title}>Quick Tips</TextTitle>
+          <Box style={styles.tips}>
+            <Text>How to set boundaries...</Text>
+          </Box>
+          <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20, gap: 10 }}>
+            <Box style={styles.wisdomBox}>
+              <Text style={styles.wisdomDate}>April 15</Text>
+              <Text style={styles.wisdomText}>
                 Don’t say yes to everything - you may be reaching the burnout.
-                </Text>
-                <Image source={require('@/assets/icons/crystal-ball (1).png')} style={styles.magicBall} />
-               </Box>
-            </View>
+              </Text>
+              <Image source={require('@/assets/icons/crystal-ball (1).png')} style={styles.magicBall} />
+            </Box>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

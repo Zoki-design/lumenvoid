@@ -1,4 +1,5 @@
-import { View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+// MeditationCard.tsx
+import { View, StyleSheet, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { TextSubheading, TextCaption } from './StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
@@ -15,23 +16,24 @@ interface MeditationCardProps {
   title: string;
   duration: string;
   imageUrl: string;
-  onPress: () => void;
+  youtubeUrl: string; // YouTube URL
 }
 
 export default function MeditationCard({ 
   title, 
   duration, 
   imageUrl, 
-  onPress 
+  youtubeUrl 
 }: MeditationCardProps) {
   const scale = useSharedValue(1);
-  
+
   const handlePress = () => {
     scale.value = withSequence(
       withTiming(0.98, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
-    onPress();
+    // YouTube URL руу шилжих
+    Linking.openURL(youtubeUrl); // Энэ газар YouTube линк рүү нэвтрэх болно
   };
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -51,7 +53,7 @@ export default function MeditationCard({
           <View style={styles.overlay}>
             <View style={styles.content}>
               <TextSubheading style={styles.title}>{title}</TextSubheading>
-              <TextCaption style={styles.duration}>{duration}</TextCaption>\
+              <TextCaption style={styles.duration}>{duration}</TextCaption>
             </View>
             <View style={styles.playButton}>
               <AntDesign name="caretright" size={24} color={themes.light.box} />
@@ -63,6 +65,7 @@ export default function MeditationCard({
   );
 }
 
+// Стилүүд
 const styles = StyleSheet.create({
   card: {
     height: 100,
@@ -72,13 +75,12 @@ const styles = StyleSheet.create({
     marginBottom: Layout.spacing.md,
     shadowColor: themes.light.textPrimary,
     shadowOffset: {
-	  width: 0,
-	  height: 2,
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
-    
   },
   imageBackground: {
     width: '100%',

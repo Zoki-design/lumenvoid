@@ -1,0 +1,19 @@
+{
+  "apiUrl": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
+  "apiKey": "AIzaSyAXH12KKccUsoA2ImeRxDE0byd1scpBrJA", 
+  "model": "gemini-pro",
+  "temperature": 1,
+  "max_tokens": 2048,
+  "top_p": 1,
+  "presence_penalty": 0,
+  "frequency_penalty": 0,
+  "response_format": {
+    "type": "text"
+  },
+  "stream": false,
+  "stop": null,
+  "logprobs": false,
+  "tools": null,
+  "tool_choice": "none",
+  "stream_options": null
+}
