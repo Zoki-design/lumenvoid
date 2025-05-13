@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,21 +9,61 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import { themes } from '@/constants/Colours'; // Your custom theme file
+import { themes } from '@/constants/Colours';
+import { GoogleGenAI } from "@google/genai";
 
 interface Message {
   id: string;
-  role: 'user' | 'ai';
+  role: "user" | "ai" | "model";
   text: string;
 }
+
+const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+
+const sendToGemini = async (userInput: string) => {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: userInput,
+  });
+  return response.text;
+};
+
+const STORAGE_KEY = 'CHAT_MESSAGES';
 
 export default function AIChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const flatListRef = useRef<FlatList>(null);
 
-  const sendMessage = () => {
+  // Хадгалалтанд бичих
+  const saveMessages = async (msgs: Message[]) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+    } catch (e) {
+      console.error('Хадгалах үед алдаа гарлаа:', e);
+    }
+  };
+
+  // Хадгалсан мессежүүдийг ачаалах
+  const loadMessages = async () => {
+    try {
+      const stored = await AsyncStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        setMessages(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error('Ачаалах үед алдаа гарлаа:', e);
+    }
+  };
+
+  useEffect(() => {
+    loadMessages();
+  }, []);
+
+  const sendMessage = async () => {
     if (!input.trim()) return;
 
     const userMsg: Message = {
@@ -32,18 +72,33 @@ export default function AIChat() {
       text: input.trim(),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedMsgs = [...messages, userMsg];
+    setMessages(updatedMsgs);
+    saveMessages(updatedMsgs);
     setInput('');
 
-    // Simulated AI response
-    setTimeout(() => {
+    try {
+      const aiResponse = await sendToGemini(userMsg.text);
+      const aiMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'model',
+        text: aiResponse || '⚠️ Хариу ирсэнгүй.',
+      };
+
+      const finalMsgs = [...updatedMsgs, aiMsg];
+      setMessages(finalMsgs);
+      saveMessages(finalMsgs);
+    } catch (error) {
+      console.error('Gemini API алдаа:', error);
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'ai',
-        text: `Echo: ${userMsg.text}`, // Replace with your API call
+        text: '⚠️ Алдаа гарлаа. Дахин оролдоно уу.',
       };
-      setMessages((prev) => [...prev, aiMsg]);
-    }, 600);
+      const finalMsgs = [...updatedMsgs, aiMsg];
+      setMessages(finalMsgs);
+      saveMessages(finalMsgs);
+    }
   };
 
   const renderItem = ({ item }: { item: Message }) => (
@@ -69,13 +124,15 @@ export default function AIChat() {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.chatContainer}
-        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+        onContentSizeChange={() =>
+          flatListRef.current?.scrollToEnd({ animated: true })
+        }
       />
 
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Ask me anything..."
+          placeholder="Асуух зүйлээ бичнэ үү..."
           value={input}
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
@@ -88,6 +145,9 @@ export default function AIChat() {
     </KeyboardAvoidingView>
   );
 }
+
+// styles таны байгаа хэвээр байж болно
+
 
 const styles = StyleSheet.create({
   container: {
