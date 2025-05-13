@@ -11,7 +11,18 @@ export default function MoodCalendar() {
 
   const moodIcon = moods.find(m => m.id === '7')?.image;
 
-  const renderDay = ({ date, state }) => {
+  type DayProps = {
+    date: {
+      dateString: string;
+      day: number;
+      month: number;
+      year: number;
+      timestamp: number;
+    };
+    state: string;
+  };
+
+  const renderDay = ({ date, state }: DayProps) => {
     const isToday = date.dateString === moment().format('YYYY-MM-DD');
 
     return (
@@ -24,7 +35,7 @@ export default function MoodCalendar() {
     );
   };
 
-  const renderHeader = (date) => {
+  const renderHeader = (date: Date) => {
     const current = moment(date);
     const month = current.format('MMMM');
     const year = current.format('YYYY');
@@ -42,7 +53,7 @@ export default function MoodCalendar() {
     );
   };
 
-  const changeMonth = (direction) => {
+  const changeMonth = (direction: number) => {
     const newDate = moment(currentDate).add(direction, 'months').format('YYYY-MM-DD');
     setCurrentDate(newDate);
   };
@@ -51,7 +62,7 @@ export default function MoodCalendar() {
     <View style={styles.container}>
       <Calendar
         current={currentDate}
-        onDayPress={(day) => setCurrentDate(day.dateString)}
+        onDayPress={(day: { dateString: string }) => setCurrentDate(day.dateString)}
         renderHeader={renderHeader}
         dayComponent={renderDay}
         theme={{
