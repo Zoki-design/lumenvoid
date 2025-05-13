@@ -54,9 +54,7 @@ export default function HomeScreen() {
   const renderMoodItem = ({ item }: { item: typeof moods[0] }) => (
     <MoodCard
       image={item.image}
-      label={item.label}
-      selected={selectedMood === item.id}
-      onPress={() => setSelectedMood(item.id)}
+      count={item.count}
     />
   );
 
