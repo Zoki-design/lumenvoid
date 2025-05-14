@@ -38,7 +38,7 @@ export default function AIChat() {
   const [input, setInput] = useState('');
   const flatListRef = useRef<FlatList>(null);
 
-  // Хадгалалтанд бичих
+  // Хадгалах
   const saveMessages = async (msgs: Message[]) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
@@ -47,7 +47,7 @@ export default function AIChat() {
     }
   };
 
-  // Хадгалсан мессежүүдийг ачаалах
+  // Ачаалах
   const loadMessages = async () => {
     try {
       const stored = await AsyncStorage.getItem(STORAGE_KEY);
@@ -63,6 +63,7 @@ export default function AIChat() {
     loadMessages();
   }, []);
 
+  // Мессеж илгээх
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -101,6 +102,14 @@ export default function AIChat() {
     }
   };
 
+  // Мессеж устгах
+  const deleteMessage = async (id: string) => {
+    const updatedMsgs = messages.filter((msg) => msg.id !== id);
+    setMessages(updatedMsgs);
+    await saveMessages(updatedMsgs);
+  };
+
+  // Мессежийг харуулах
   const renderItem = ({ item }: { item: Message }) => (
     <View
       style={[
@@ -109,6 +118,9 @@ export default function AIChat() {
       ]}
     >
       <Text style={styles.messageText}>{item.text}</Text>
+      <TouchableOpacity onPress={() => deleteMessage(item.id)} style={styles.deleteIcon}>
+        <Ionicons name="trash" size={16} color="#888" />
+      </TouchableOpacity>
     </View>
   );
 
@@ -146,9 +158,7 @@ export default function AIChat() {
   );
 }
 
-// styles таны байгаа хэвээр байж болно
-
-
+// CSS стиль
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -163,6 +173,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 12,
     marginBottom: 10,
+    position: 'relative',
   },
   userMsg: {
     alignSelf: 'flex-end',
@@ -175,6 +186,11 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 16,
     color: '#333',
+  },
+  deleteIcon: {
+    position: 'absolute',
+    bottom: 6,
+    right: 8,
   },
   inputContainer: {
     flexDirection: 'row',
