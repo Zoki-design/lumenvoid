@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  useWindowDimensions,
+} from 'react-native';
 import { colors, responses } from '../constants/questions';
 import { RelativePathString, useRouter } from 'expo-router';
 
@@ -12,52 +19,81 @@ interface Props {
 const Question: React.FC<Props> = ({ question, questionIndex, onNextRoute }) => {
   const router = useRouter();
   const [selected, setSelected] = React.useState<number | null>(null);
+  const { width, height } = useWindowDimensions();
+
+  const progressPercent = ((questionIndex + 1) / 4) * 100;
+  const paddingHorizontal = width * 0.06;
+  const circleSize = Math.min(width * 0.08, 36); // scale but limit to max size
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
-        <View style={styles.backIcon} />
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: `${((questionIndex + 1) / 4) * 100}%` }]} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F6F4FB' }}>
+      <View style={[styles.container, { paddingHorizontal }]}>
+        {/* Top Bar */}
+        <View style={styles.topBar}>
+          <View style={styles.backIcon} />
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
+          </View>
         </View>
-      </View>
 
-      <Text style={styles.question}>{question}</Text>
+        {/* Question */}
+        <Text style={[styles.question, { fontSize: width * 0.05 }]}>{question}</Text>
 
-      <Text style={styles.responseText}>
-        {selected != null ? responses[selected - 1] : ''}
-      </Text>
+        {/* Selected response */}
+        <Text style={styles.responseText}>
+          {selected != null ? responses[selected - 1] : ''}
+        </Text>
 
-      <View style={styles.selectionBox}>
-        <View style={styles.optionsContainer}>
-          {colors.map((color, index) => {
-            const isSelected = selected === index + 1;
-            return (
-              <TouchableOpacity
-                key={index}
-                style={[styles.circle, { backgroundColor: color }, isSelected && styles.selectedCircle]}
-                onPress={() => setSelected(index + 1)}
-              />
-            );
-          })}
+        {/* Selection */}
+        <View style={styles.selectionBox}>
+          <View style={styles.optionsContainer}>
+            {colors.map((color, index) => {
+              const isSelected = selected === index + 1;
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    {
+                      width: circleSize,
+                      height: circleSize,
+                      borderRadius: circleSize / 2,
+                      backgroundColor: color,
+                      opacity: isSelected ? 1 : 0.7,
+                      transform: [{ scale: isSelected ? 1.2 : 1 }],
+                      borderWidth: isSelected ? 3 : 0,
+                      borderColor: '#2D2A5B',
+                    },
+                  ]}
+                  onPress={() => setSelected(index + 1)}
+                />
+              );
+            })}
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity
-        onPress={() => router.push(onNextRoute as RelativePathString)}
-        style={[styles.button, selected == null && { opacity: 0.5 } ]}>
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Continue Button */}
+        <TouchableOpacity
+          onPress={() => router.push(onNextRoute as RelativePathString)}
+          style={[
+            styles.button,
+            { marginHorizontal: width * 0.1 },
+            selected == null && { opacity: 0.5 },
+          ]}
+          disabled={selected == null}
+        >
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
+
+export default Question;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F6F4FB',
-    paddingHorizontal: 24,
-    paddingTop: 60,
+    paddingTop: '10%',
     justifyContent: 'flex-start',
   },
   topBar: {
@@ -67,10 +103,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   backIcon: {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
     backgroundColor: '#D9D9D9',
-    borderRadius: 12,
+    borderRadius: 14,
   },
   progressBar: {
     flex: 1,
@@ -85,7 +121,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#C9B6E4',
   },
   question: {
-    fontSize: 18,
     textAlign: 'center',
     fontWeight: '600',
     color: '#2D2A5B',
@@ -93,7 +128,7 @@ const styles = StyleSheet.create({
   },
   responseText: {
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 14,
     color: '#777',
     marginBottom: 24,
   },
@@ -102,7 +137,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    marginHorizontal: 8,
     marginBottom: 40,
     shadowColor: '#000',
     shadowOpacity: 0.05,
@@ -114,24 +148,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  circle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    opacity: 0.7,
-  },
-  selectedCircle: {
-    borderWidth: 3,
-    borderColor: '#2D2A5B',
-    transform: [{ scale: 1.2 }],
-    opacity: 1,
-  },
   button: {
     backgroundColor: '#2D2A5B',
     paddingVertical: 14,
     borderRadius: 16,
     alignItems: 'center',
-    marginHorizontal: 32,
   },
   buttonText: {
     color: '#FFFFFF',
@@ -139,5 +160,3 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-
-export default Question;
