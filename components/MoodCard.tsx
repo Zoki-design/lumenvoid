@@ -5,7 +5,7 @@ import { themes } from '@/constants/Colours';
 import { TextTitle } from './StyledText';
 
 interface MoodCardProps {
-  image: any; // require() image or valid source
+  image: any; 
   count: string;
 }
 

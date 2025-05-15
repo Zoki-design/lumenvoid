@@ -11,8 +11,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // For JSON bodies
-app.use(express.urlencoded({ extended: true })); // For form-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI;
@@ -37,9 +37,17 @@ const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
+  mood: String,
+  date: { type: Date, default: Date.now },
+});
+
+const MoodSchema = new mongoose.Schema({
+  mood: { type: String, required: true },
+  date: { type: Date, default: Date.now },
 });
 
 const User = mongoose.model('User', UserSchema);
+const Mood = mongoose.model('Mood', MoodSchema);
 
 // Routes
 app.get('/', (req, res) => {
@@ -118,6 +126,31 @@ app.post('/todos', async (req, res) => {
     res.status(201).json({ message: 'Todo нэмэгдлээ', todo: newTodo });
   } catch (err) {
     res.status(500).json({ error: 'Серверийн алдаа' });
+  }
+});
+
+// POST: Mood хадгалах
+app.post('/moods', async (req, res) => {
+  try {
+    const { mood } = req.body;
+    if (!mood) {
+      return res.status(400).json({ error: 'Mood утга шаардлагатай.' });
+    }
+    const newMood = new Mood({ mood });
+    await newMood.save();
+    res.status(201).json({ message: 'Mood хадгалагдлаа', mood: newMood });
+  } catch (error) {
+    res.status(500).json({ error: 'Хадгалах үед алдаа гарлаа' });
+  }
+});
+
+// GET: Бүх moods авах
+app.get('/moods', async (req, res) => {
+  try {
+    const moods = await Mood.find().sort({ date: -1 });
+    res.json(moods);
+  } catch (error) {
+    res.status(500).json({ error: 'Унших үед алдаа гарлаа' });
   }
 });
 

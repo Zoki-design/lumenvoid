@@ -1,4 +1,13 @@
-import { View, ScrollView, StyleSheet, TouchableOpacity, FlatList, Text, TextInput, Image } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Text,
+  TextInput,
+  Image,
+} from 'react-native';
 import { TextTitle } from '@/components/StyledText';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,17 +21,36 @@ import MoodCard from '@/components/MoodCard';
 import MeditationCard from '@/components/MeditationCard';
 import { useState } from 'react';
 import Box from '@/components/Box';
-import { moods, meditations, progressStats } from '@/assets/data/mockData';
+import { moods } from '@/assets/data/mockData';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
 
-
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const bellScale = useSharedValue(1);
+  const router = useRouter();
+
+  const LOCAL_IP = '192.168.88.92';
+  const PORT = 5000;
+
+  const saveMoodToDB = async (mood: string) => {
+    try {
+      const response = await fetch(`http://${LOCAL_IP}:${PORT}/moods`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mood }),
+      });
+
+      const data = await response.json();
+      console.log('Mood saved:', data);
+    } catch (error) {
+      console.error('Failed to save mood:', error);
+    }
+  }
+
 
   const handlePressBell = () => {
     bellScale.value = withSpring(1.2, { damping: 4 }, () => {
@@ -30,23 +58,21 @@ export default function HomeScreen() {
     });
   };
 
-  const router = useRouter();
   const handleAddMood = () => {
-  router.push('/emotion/wheelie');
-};  
+    setSelectedMood('Happy');
+    saveMoodToDB('Happy');
+    router.push('/emotion/wheelie');
+  };
 
   const handleAddTodo = () => {
     handlePressBell();
     router.push('/today/todo');
-    console.log('Logged To Do',);
   };
 
   const handleAddToday = () => {
     handlePressBell();
     router.push('/today/today');
-    console.log('Logged Today',);
-  }
-
+  };
 
   const bellAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -55,32 +81,19 @@ export default function HomeScreen() {
   });
 
   const renderMoodItem = ({ item }: { item: typeof moods[0] }) => (
-    <MoodCard
-      image={item.image}
-      count={item.count}
-    />
+    <MoodCard image={item.image} count={item.count} />
   );
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <View>
-            <TextTitle style={styles.title}>Week</TextTitle>
-          </View>
-
+          <TextTitle style={styles.title}>Week</TextTitle>
           <View style={styles.flex}>
-            <TouchableOpacity
-              onPress={handlePressBell}
-              style={styles.iconButtons}
-            >
+            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
               <Ionicons name="notifications" size={24} color={themes.light.textSecondary} />
             </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={handlePressBell}
-              style={styles.iconButtons}
-            >
+            <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
               <MaterialIcons name="settings" size={24} color={themes.light.textSecondary} />
             </TouchableOpacity>
           </View>
@@ -102,26 +115,18 @@ export default function HomeScreen() {
           <View style={styles.sectionHeader}>
             <TextTitle style={styles.title}>Today</TextTitle>
             <View style={styles.flex}>
-              <TouchableOpacity
-                onPress={handleAddToday}
-                style={styles.iconButtons}
-              >
+              <TouchableOpacity onPress={handleAddToday} style={styles.iconButtons}>
                 <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handlePressBell}
-                style={styles.iconButtons}
-              >
+              <TouchableOpacity onPress={handlePressBell} style={styles.iconButtons}>
                 <FontAwesome6 name="trash" size={17} color={themes.light.textSecondary} />
               </TouchableOpacity>
             </View>
           </View>
+
           <Box style={{ width: '100%', height: 90 }}>
             <TouchableOpacity onPress={handleAddMood}>
-              <Image
-                style={styles.icons}
-                source={require('@/assets/icons/happy1.png')}
-             />
+              <Image style={styles.icons} source={require('@/assets/icons/happy1.png')} />
             </TouchableOpacity>
             <View style={styles.dateContainer}>
               <Text style={{ color: themes.light.box }}>15 Tue</Text>
@@ -131,20 +136,12 @@ export default function HomeScreen() {
               placeholder="How do you feel today?"
               style={styles.TodayInput}
               placeholderTextColor={themes.light.textSecondary}
-              keyboardType="default"
             />
-            <Image style={styles.focusIcon}
-              source={require('@/assets/icons/lotus 1.png')} />
+            <Image style={styles.focusIcon} source={require('@/assets/icons/lotus 1.png')} />
           </Box>
 
-
           <Box style={styles.toDoList}>
-            <View style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text style={styles.Todo}>To-Do:</Text>
               <TouchableOpacity onPress={handleAddTodo}>
                 <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
@@ -157,54 +154,45 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <TextTitle style={styles.title}>Daily Affirmation</TextTitle>
-          </View>
+          <TextTitle style={styles.title}>Daily Affirmation</TextTitle>
           <TextInput
-            placeholder="Today I feel greatful for..."
+            placeholder="Today I feel grateful for..."
             placeholderTextColor={themes.light.textSecondary}
             style={styles.greatfulInput}
-            keyboardType="default"
           />
         </View>
 
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <TextTitle style={styles.title}>Meditation</TextTitle>
-          </View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <TextTitle style={styles.title}>Meditation</TextTitle>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={{ flexDirection: 'row', gap: 20 }}>
               <MeditationCard
                 title="Anxiety Relief"
                 duration="15 min"
-                imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                youtubeUrl="https://www.youtube.com/shorts/5MFSBMcYZTw" 
+                imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png"
+                youtubeUrl="https://www.youtube.com/shorts/5MFSBMcYZTw"
               />
               <MeditationCard
                 title="Mindful Breathing"
                 duration="10 min"
-                imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                youtubeUrl="https://www.youtube.com/shorts/9Bqm14hCntg" 
+                imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg"
+                youtubeUrl="https://www.youtube.com/shorts/9Bqm14hCntg"
               />
               <MeditationCard
                 title="Meditation for mornings"
                 duration="20 min"
-                imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg?w=800&h=450&c=crop"
-                youtubeUrl="https://www.youtube.com/watch?v=lEKDob0LwRM" 
-              />
-              <MeditationCard
-                title="40 Minute Pomodoro for Studying"
-                duration="45 min"
-                imageUrl="https://d15q5g7ipjper4.cloudfront.net/blog/wp-content/uploads/2022/09/pexels-charlotte-may-5965839.jpeg"
-                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
+                imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg"
+                youtubeUrl="https://www.youtube.com/watch?v=lEKDob0LwRM"
               />
             </View>
           </ScrollView>
+
           <TextTitle style={styles.title}>Quick Tips</TextTitle>
           <Box style={styles.tips}>
             <Text>How to set boundaries...</Text>
           </Box>
-          <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20, gap: 10 }}>
+
+          <View style={{ alignItems: 'center', marginTop: 20 }}>
             <Box style={styles.wisdomBox}>
               <Text style={styles.wisdomDate}>April 15</Text>
               <Text style={styles.wisdomText}>
