@@ -7,7 +7,7 @@ const focusOptions = [
   {
     title: 'Work',
     subtitle: 'productive, growth',
-    icon: require('../../assets/icons/suitcase 1.svg'), // Replace with your own icons
+    icon: require('../../assets/icons/suitcase 1.svg'), 
     bgColor: '#E3F4F9',
   },
   {

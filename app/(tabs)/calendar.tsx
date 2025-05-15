@@ -6,22 +6,22 @@ import Layout from '@/constants/Layout';
 import Card from '@/components/Card';
 import { Heart, MessageCircle, MoveHorizontal as MoreHorizontal, CirclePlus as PlusCircle } from 'lucide-react-native';
 import { communityPosts, therapists } from '@/assets/data/mockData';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
 
 function CommunityPost({ item }: { item: typeof communityPosts[0] }) {
   const likeScale = useSharedValue(1);
-    
+
   const handlePressLike = () => {
     likeScale.value = withSpring(1.3, { damping: 4 }, () => {
       likeScale.value = withSpring(1);
     });
     console.log('Like post', item.id);
   };
-    
+
   const likeAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: likeScale.value }],
@@ -44,12 +44,12 @@ function CommunityPost({ item }: { item: typeof communityPosts[0] }) {
           <MoreHorizontal size={20} color={Colors.text.secondary} />
         </TouchableOpacity>
       </View>
-      
+
       <TextSubheading style={styles.postTitle}>{item.title}</TextSubheading>
       <TextBody style={styles.postContent}>{item.content}</TextBody>
-      
+
       <View style={styles.postActions}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.actionButton}
           onPress={handlePressLike}
         >
@@ -58,7 +58,7 @@ function CommunityPost({ item }: { item: typeof communityPosts[0] }) {
           </Animated.View>
           <TextCaption style={styles.actionText}>{item.likes}</TextCaption>
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.actionButton}>
           <MessageCircle size={20} color={Colors.text.secondary} />
           <TextCaption style={styles.actionText}>{item.comments}</TextCaption>
@@ -81,7 +81,7 @@ export default function CommunityScreen() {
 
       <View style={styles.featuredSection}>
         <TextSubheading style={styles.sectionTitle}>Connect with Therapists</TextSubheading>
-        
+
         <FlatList
           data={therapists}
           horizontal
@@ -91,9 +91,9 @@ export default function CommunityScreen() {
           ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.therapistCard}>
-              <Image 
-                source={{ uri: item.imageUrl }} 
-                style={styles.therapistImage} 
+              <Image
+                source={{ uri: item.imageUrl }}
+                style={styles.therapistImage}
               />
               <View style={styles.therapistInfo}>
                 <TextCaption style={styles.therapistName} numberOfLines={1}>
@@ -121,7 +121,7 @@ export default function CommunityScreen() {
 
       <View style={styles.postsSection}>
         <TextSubheading style={styles.sectionTitle}>Recent Posts</TextSubheading>
-        
+
         <FlatList
           data={communityPosts}
           renderItem={({ item }) => <CommunityPost item={item} />}
