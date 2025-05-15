@@ -12,12 +12,12 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MoodCard from '@/components/MoodCard';
 import MeditationCard from '@/components/MeditationCard';
 import { useState } from 'react';
-import Box from '@/components/Box'; 
+import Box from '@/components/Box';
 
 import { moods, meditations, progressStats } from '@/assets/data/mockData';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
 
@@ -45,7 +45,7 @@ export default function HomeScreen() {
     router.push('/today/today');
     console.log('Logged Today',);
   }
-  
+
 
   const bellAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -53,16 +53,16 @@ export default function HomeScreen() {
     };
   });
 
-const renderMoodItem = ({ item }: { item: typeof moods[0] }) => {
-  if (item.id === '7') return null; // Skip rendering the "None" mood
+  const renderMoodItem = ({ item }: { item: typeof moods[0] }) => {
+    if (item.id === '7') return null; // Skip rendering the "None" mood
 
-  return (
-    <MoodCard
-      image={item.image}
-      count={item.count}
-    />
-  );
-};
+    return (
+      <MoodCard
+        image={item.image}
+        count={item.count}
+      />
+    );
+  };
 
 
   return (
@@ -71,23 +71,23 @@ const renderMoodItem = ({ item }: { item: typeof moods[0] }) => {
         <View style={styles.header}>
           <View>
             <TextTitle style={styles.title}>Recorded Moods</TextTitle>
-          <View style={[styles.flex, { left: 300, position: 'absolute' }]}>
-          <TouchableOpacity 
-            onPress={handlePressBell} 
-            style={styles.iconButtons}
-          >
-            <FontAwesome name="search" size={23} color={themes.light.textSecondary} />
-          </TouchableOpacity>
+            <View style={[styles.flex, { left: 300, position: 'absolute' }]}>
+              <TouchableOpacity
+                onPress={handlePressBell}
+                style={styles.iconButtons}
+              >
+                <FontAwesome name="search" size={23} color={themes.light.textSecondary} />
+              </TouchableOpacity>
 
-            <TouchableOpacity 
-              onPress={handlePressBell} 
-              style={styles.iconButtons}
-            >
-              <FontAwesome5 name="share" size={21} color={themes.light.textSecondary} />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handlePressBell}
+                style={styles.iconButtons}
+              >
+                <FontAwesome5 name="share" size={21} color={themes.light.textSecondary} />
+              </TouchableOpacity>
+            </View>
           </View>
-          </View>
-          
+
         </View>
 
         <View style={styles.recordedMoods}>
@@ -105,21 +105,21 @@ const renderMoodItem = ({ item }: { item: typeof moods[0] }) => {
 
         <View style={[styles.section, { marginTop: -20 }]}>
           <View style={styles.sectionHeader}>
-            <TextTitle style={styles.title}>Overall</TextTitle> 
+            <TextTitle style={styles.title}>Overall</TextTitle>
           </View>
           <Box style={styles.overallMoods}>
             <View style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}>
               <Text style={styles.moodText}>Your anger moods have been increased drastically</Text>
             </View>
           </Box>
         </View>
 
-        
+
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <TextTitle style={styles.title}>Sleep Quality</TextTitle>
@@ -133,43 +133,43 @@ const renderMoodItem = ({ item }: { item: typeof moods[0] }) => {
           <View style={styles.sectionHeader}>
             <TextTitle style={styles.title}>Recorded Main Focuses</TextTitle>
           </View>
-            <TextTitle style={styles.title}>Comparison</TextTitle>
-            <Box style={styles.tips}>
-              <Text>How to set boundaries...</Text>
-            </Box>
+          <TextTitle style={styles.title}>Comparison</TextTitle>
+          <Box style={styles.tips}>
+            <Text>How to set boundaries...</Text>
+          </Box>
         </View>
 
         <View style={styles.featuredSection}>
-                <TextTitle style={styles.title}>Connect with Therapists</TextTitle>
-                
-                <FlatList
-                  data={therapists}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  keyExtractor={(item) => item.id}
-                  contentContainerStyle={styles.therapistsList}
-                  ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.therapistCard}>
-                      <Image 
-                        source={{ uri: item.imageUrl }} 
-                        style={styles.therapistImage} 
-                      />
-                      <View style={styles.therapistInfo}>
-                        <TextCaption style={styles.therapistName} numberOfLines={1}>
-                          {item.name}
-                        </TextCaption>
-                        <TextSmall style={styles.therapistSpecialty} numberOfLines={1}>
-                          {item.specialty}
-                        </TextSmall>
-                        <View style={styles.rating}>
-                          <TextSmall style={styles.ratingText}>★ {item.rating}</TextSmall>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  )}
+          <TextTitle style={styles.title}>Connect with Therapists</TextTitle>
+
+          <FlatList
+            data={therapists}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.therapistsList}
+            ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.therapistCard}>
+                <Image
+                  source={{ uri: item.imageUrl }}
+                  style={styles.therapistImage}
                 />
-              </View>
+                <View style={styles.therapistInfo}>
+                  <TextCaption style={styles.therapistName} numberOfLines={1}>
+                    {item.name}
+                  </TextCaption>
+                  <TextSmall style={styles.therapistSpecialty} numberOfLines={1}>
+                    {item.specialty}
+                  </TextSmall>
+                  <View style={styles.rating}>
+                    <TextSmall style={styles.ratingText}>★ {item.rating}</TextSmall>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
 
 
       </ScrollView>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: themes.light.textPrimary,
   },
-  unrecorded: { 
+  unrecorded: {
     color: themes.light.textPrimary,
     position: 'absolute',
     fontSize: 13,
@@ -217,37 +217,37 @@ const styles = StyleSheet.create({
     left: 310,
   },
   therapistsList: {
-      paddingBottom: Layout.spacing.lg,
-    },
-    therapistCard: {
-      width: 150,
-      borderRadius: Layout.borderRadius.md,
-      overflow: 'hidden',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-    },
-    therapistImage: {
-      width: '100%',
-      height: 100,
-      resizeMode: 'cover',
-    },
-    therapistInfo: {
-      padding: Layout.spacing.sm,
-    },
-    therapistName: {
-      fontFamily: 'PlusJakartaSans-SemiBold',
-    },
-    therapistSpecialty: {
-      marginBottom: Layout.spacing.xs,
-    },
-    rating: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    ratingText: {
-    },
+    paddingBottom: Layout.spacing.lg,
+  },
+  therapistCard: {
+    width: 150,
+    borderRadius: Layout.borderRadius.md,
+    overflow: 'hidden',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  therapistImage: {
+    width: '100%',
+    height: 100,
+    resizeMode: 'cover',
+  },
+  therapistInfo: {
+    padding: Layout.spacing.sm,
+  },
+  therapistName: {
+    fontFamily: 'PlusJakartaSans-SemiBold',
+  },
+  therapistSpecialty: {
+    marginBottom: Layout.spacing.xs,
+  },
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingText: {
+  },
   greatfulInput: {
     height: 50,
     width: '100%',
@@ -392,9 +392,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   sleepQuality: {
-    width: '100%',	
+    width: '100%',
     height: 120,
     marginRight: 20,
-    borderRadius: 10, 
+    borderRadius: 10,
   }
 });
