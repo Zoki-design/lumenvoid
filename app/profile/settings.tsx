@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { View, Switch, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { TextSubheading, TextCaption } from '@/components/StyledText';
 import { ChevronRight } from 'lucide-react-native';
 import Colors from '@/constants/Colors';
-import Box from '@/components/Box';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
@@ -12,12 +11,28 @@ export default function SettingsScreen() {
   const [dailyReminder, setDailyReminder] = useState(true);
   const [hideFromRanking, setHideFromRanking] = useState(false);
 
-  const renderItem = (title: string, onPress?: () => void, rightElement?: JSX.Element) => (
-    <TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={onPress ? 0.7 : 1}>
-      <TextSubheading>{title}</TextSubheading>
-      {rightElement || <ChevronRight size={20} color={Colors.text.tertiary} />}
-    </TouchableOpacity>
-  );
+  const renderItem = (
+    title: string,
+    onPress?: () => void,
+    rightElement?: ReactNode
+  ) => {
+    const content = (
+      <View style={styles.item}>
+        <TextSubheading style={styles.itemText}>{title}</TextSubheading>
+        {rightElement ?? <ChevronRight size={20} color={Colors.text.tertiary} />}
+      </View>
+    );
+
+    if (onPress) {
+      return (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+          {content}
+        </TouchableOpacity>
+      );
+    }
+
+    return content;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,6 +69,7 @@ export default function SettingsScreen() {
           />
         )}
         {renderItem('Sound effect', () => router.back())}
+        {renderItem('Log Out', () => router.push('/sign-in'))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -65,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.primary,
   },
   scrollContainer: {
-    padding: 16,
+    padding: 25,
     paddingBottom: 100,
   },
   sectionTitle: {
@@ -80,8 +96,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     paddingHorizontal: 12,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.background.secondary,
     borderRadius: 16,
     marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 2, // Android
+  },
+  itemText: {
+    fontSize: 14, // Smaller than default
   },
 });
