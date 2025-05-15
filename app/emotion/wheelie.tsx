@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-nati
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 
+// SVGs: Faces & Emotion Wheel
 import EmotionWheelSVG from '@/assets/icons/emotion wheel.svg';
 import HappyFace from '@/assets/icons/happy1.svg';
 import SadFace from '@/assets/icons/sad1.svg';
@@ -10,8 +11,6 @@ import AngryFace from '@/assets/icons/mad1.svg';
 import TiredFace from '@/assets/icons/meh1.svg';
 import DepressedFace from '@/assets/icons/depressed1.svg';
 import AnxiousFace from '@/assets/icons/anxious1.svg';
-
-
 
 const { width } = Dimensions.get('window');
 const RADIUS = width * 1.1;
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     bottom: -RADIUS / 2 + 190,
     height: RADIUS,
     left: -RADIUS / 2 + 210,
-    overflow: 'visible',
+    overflow: 'hidden',
     width: '100%',
     alignItems: 'center',    
   },

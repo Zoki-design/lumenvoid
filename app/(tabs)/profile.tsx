@@ -21,6 +21,7 @@ export default function ProfileScreen() {
 
 
   return (
+    <SafeAreaView>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         
@@ -29,7 +30,7 @@ export default function ProfileScreen() {
         <View style={styles.userCard}>
           <View style={styles.userInfo}>
             <View style={styles.avatarPlaceholder} />
-            <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../emotion/wheelie')}>
+            <TouchableOpacity style={styles.userDetails} onPress={() => router.back()}>
               <TextCaption style={styles.username}>User</TextCaption>
               <TextCaption>ID: 154654254545</TextCaption>
             </TouchableOpacity>
@@ -75,6 +76,7 @@ export default function ProfileScreen() {
           {renderMenuItem(<HelpCircle size={20} />, 'Useful Links', '../profile/help')}
 
       </ScrollView>
+    </SafeAreaView>
 
   );
 }
@@ -111,6 +113,14 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 16,
     ...shadow,
+    // iOS shadow
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+
+  // Android shadow
+  elevation: 4,
   },
   userInfo: {
     flexDirection: 'row',
@@ -165,6 +175,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#776F89',
     height: 120,
     ...shadow,
+    // iOS shadow
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+
+  // Android shadow
+  elevation: 4,
   },
   mascotImage: {
     width: 80,

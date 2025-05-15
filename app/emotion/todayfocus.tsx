@@ -43,7 +43,7 @@ const FocusScreen = () => {
       </View>
 
       {/* Question */}
-      <Text style={styles.questionText}>What’s your Main Focus{'\n'}for today?</Text>
+      <Text style={styles.questionText}>What’s your Main Focus{''}for today?</Text>
 
       {/* Focus Options */}
       <View style={styles.grid}>
@@ -57,7 +57,7 @@ const FocusScreen = () => {
       </View>
 
       {/* Button */}
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/calendar')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)')}>
         <Text style={styles.buttonText}>Go to Dashboard</Text>
       </TouchableOpacity>
     </View>

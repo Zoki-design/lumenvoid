@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router';
 
@@ -8,35 +8,46 @@ const Sleep = () => {
   const router = useRouter();
 
   const handleNext = () => {
-    // Pass the sleep value as a parameter to the result screen
-    router.push(`/emotion/result?sleep=${value}`);
+    router.push(`/emotion/todayfocus?sleep=${value}`);
   };
 
+  const getColor = (val: number) => {
+    if (val <= 4) return '#e53935'; // red
+    if (val <= 8) return '#fbc02d'; // yellow
+    return '#43a047'; // green
+  };
+
+  const color = getColor(value);
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       <Text style={styles.title}>How is your Sleep Quality?</Text>
 
-      {/* Vertical Slider Container */}
       <View style={styles.sliderContainer}>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={10}
-          step={1}
-          value={value}
-          onValueChange={setValue}
-          minimumTrackTintColor="#FFA726"
-          maximumTrackTintColor="#ddd"
-          thumbTintColor="#FFA726"
-        />
+        <View style={styles.sliderWrapper}>
+          <Slider
+            style={styles.slider}
+            minimumValue={0}
+            maximumValue={10}
+            step={1}
+            value={value}
+            onValueChange={setValue}
+            minimumTrackTintColor={color}
+            maximumTrackTintColor="#ddd"
+            thumbTintColor={color}
+          />
+        </View>
       </View>
 
-      <Text style={styles.valueLabel}>{value}/10</Text>
+      <Text style={[styles.valueLabel, { color }]}>{value}/10</Text>
 
-      <TouchableOpacity style={styles.button} onPress={handleNext}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: color }]} onPress={handleNext}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -57,24 +68,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   sliderContainer: {
-    height: 300,  // Set the height of the slider container (longer slider)
-    width: 20,
+    height: 300,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sliderWrapper: {
+    width: 300,
+    height: 40,
+    transform: [{ rotate: '-90deg' }],
     justifyContent: 'center',
     alignItems: 'center',
   },
   slider: {
-    width: 40,  // Keep the width small to maintain the vertical slider look
-    height: 300, // Make the slider longer by increasing the height
-    transform: [{ rotate: '90deg' }],  // Rotate the slider to be vertical
+    width: 300,
+    height: 40,
   },
   valueLabel: {
     fontSize: 18,
     marginTop: 10,
-    color: '#333',
   },
   button: {
     marginTop: 40,
-    backgroundColor: '#5a4fcf',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 10,

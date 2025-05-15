@@ -134,7 +134,7 @@ export default function HomeScreen() {
               keyboardType="default"
             />
             <Image style={styles.focusIcon}
-              source={require('@/assets/icons/lotus 1.png')} />
+                source={require('@/assets/icons/lotus 1.png')} />
           </Box>
 
 

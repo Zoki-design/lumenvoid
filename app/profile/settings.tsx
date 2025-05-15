@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Switch, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Switch, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { TextSubheading, TextCaption } from '@/components/StyledText';
 import { ChevronRight } from 'lucide-react-native';
 import Colors from '@/constants/Colors';
-import Box from '@/components/Box';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
@@ -12,10 +11,18 @@ export default function SettingsScreen() {
   const [dailyReminder, setDailyReminder] = useState(true);
   const [hideFromRanking, setHideFromRanking] = useState(false);
 
-  const renderItem = (title: string, onPress?: () => void, rightElement?: JSX.Element) => (
-    <TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={onPress ? 0.7 : 1}>
-      <TextSubheading>{title}</TextSubheading>
-      {rightElement || <ChevronRight size={20} color={Colors.text.tertiary} />}
+  const renderMenuItem = (
+    title: string,
+    onPress?: () => void,
+    rightElement?: React.ReactNode
+  ) => (
+    <TouchableOpacity
+      style={[styles.menuItem, onPress && styles.menuItemInteractive]}
+      onPress={onPress}
+      activeOpacity={onPress ? 0.7 : 1}
+    >
+      <TextCaption style={styles.menuText}>{title}</TextCaption>
+      {rightElement ?? <ChevronRight size={20} color={Colors.text.tertiary} />}
     </TouchableOpacity>
   );
 
@@ -23,17 +30,16 @@ export default function SettingsScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextCaption style={styles.sectionTitle}>Account</TextCaption>
-        {renderItem('Login Information', () => router.back())}
-        {renderItem('Collection', () => router.back())}
-        {renderItem('Privacy', () => router.back())}
+        {renderMenuItem('Login Information', () => router.back())}
+        {renderMenuItem('Collection', () => router.back())}
+        {renderMenuItem('Privacy', () => router.back())}
 
         <TextCaption style={styles.sectionTitle}>Subscription</TextCaption>
-        {renderItem('Restore Purchases', () => router.back())}
-        {renderItem('Cancel Subscription', () => router.back())}
+        {renderMenuItem('Restore Purchases', () => router.back())}
+        {renderMenuItem('Cancel Subscription', () => router.back())}
 
         <TextCaption style={styles.sectionTitle}>Social and Friend</TextCaption>
-        {renderItem('Blocked Users', () => router.back())}
-        {renderItem(
+        {renderMenuItem(
           'Hide from Global Ranking',
           undefined,
           <Switch
@@ -44,7 +50,7 @@ export default function SettingsScreen() {
         )}
 
         <TextCaption style={styles.sectionTitle}>Notification</TextCaption>
-        {renderItem(
+        {renderMenuItem(
           'Daily Reminder',
           undefined,
           <Switch
@@ -53,7 +59,8 @@ export default function SettingsScreen() {
             thumbColor={dailyReminder ? Colors.primary.default : '#f4f3f4'}
           />
         )}
-        {renderItem('Sound effect', () => router.back())}
+        {renderMenuItem('Sound Effect', () => router.back())}
+        {renderMenuItem('Log Out', () => router.push('/sign-in'))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -65,23 +72,40 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.primary,
   },
   scrollContainer: {
-    padding: 16,
+    paddingHorizontal: 25,
+    paddingTop: 16,
     paddingBottom: 100,
   },
   sectionTitle: {
     marginTop: 24,
-    marginBottom: 8,
+    marginBottom: 10,
     color: Colors.text.tertiary,
     fontWeight: '600',
   },
-  item: {
+  menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    paddingHorizontal: 12,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.background.secondary,
+    padding: 16,
     borderRadius: 16,
     marginBottom: 10,
+    justifyContent: 'space-between',
+  },
+  menuItemInteractive: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  menuText: {
+    flex: 1,
+    fontSize: 14,
   },
 });

@@ -3,7 +3,6 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { TextSubheading, TextCaption } from '@/components/StyledText';
 import { X } from 'lucide-react-native';
 import Colors from '@/constants/Colors';
-import Box from '@/components/Box';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,6 +14,7 @@ export default function SubscriptionScreen() {
     <TouchableOpacity
       style={[
         styles.planCard,
+        styles.shadow,
         selectedPlan === planKey && styles.planCardSelected,
       ]}
       onPress={() => setSelectedPlan(planKey)}
@@ -56,7 +56,7 @@ export default function SubscriptionScreen() {
         {renderBenefit('More customization\nCustomize your profile and change color themes!')}
         {renderBenefit('Up to 3 Photos\nRecord more pictures of your day!')}
 
-        <TouchableOpacity style={styles.trialButton}>
+        <TouchableOpacity style={[styles.trialButton, styles.shadow]}>
           <TextSubheading style={styles.trialButtonText}>Begin Free Trial</TextSubheading>
         </TouchableOpacity>
 
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: Colors.background.primary,
   },
   planCardSelected: {
     borderColor: Colors.primary.default,
@@ -129,5 +130,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.text.tertiary,
     textAlign: 'center',
+  },
+  shadow: {
+    shadowColor: Colors.text.primary,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
 });

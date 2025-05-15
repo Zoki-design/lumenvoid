@@ -44,7 +44,7 @@ export default function SignInScreen() {
         throw new Error(data.error || 'Sign-in failed');
       }
 
-      router.replace('/(tabs)');
+      router.push('/emotion/question1');
     } catch (err: any) {
       console.error('❌ Sign-in error:', err.message);
       setError(err.message || 'Unable to sign in');
