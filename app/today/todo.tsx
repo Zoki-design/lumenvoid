@@ -3,8 +3,7 @@ import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'r
 import axios from 'axios';
 import { useRouter } from 'expo-router';
 
-// Update the API_URL for Android (replace with your computer's IP address for physical devices or 10.0.2.2 for Android emulators)
-const API_URL = 'http://192.168.88.92:5000'; // For Android emulator, use this for localhost
+const API_URL = 'http://192.168.88.92:5000'; 
 
 export default function TodoScreen() {
   const router = useRouter();

@@ -31,6 +31,9 @@ export default function HomeScreen() {
   };
 
   const router = useRouter();
+  const handleAddMood = () => {
+  router.push('/emotion/wheelie');
+};  
 
   const handleAddTodo = () => {
     handlePressBell();
@@ -114,8 +117,12 @@ export default function HomeScreen() {
             </View>
           </View>
           <Box style={{ width: '100%', height: 90 }}>
-            <Image style={styles.icons}
-              source={require('@/assets/icons/happy1.png')} />
+            <TouchableOpacity onPress={handleAddMood}>
+              <Image
+                style={styles.icons}
+                source={require('@/assets/icons/happy1.png')}
+             />
+            </TouchableOpacity>
             <View style={styles.dateContainer}>
               <Text style={{ color: themes.light.box }}>15 Tue</Text>
             </View>
@@ -171,19 +178,19 @@ export default function HomeScreen() {
                 title="Anxiety Relief"
                 duration="15 min"
                 imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
+                youtubeUrl="https://www.youtube.com/shorts/5MFSBMcYZTw" 
               />
               <MeditationCard
                 title="Mindful Breathing"
                 duration="10 min"
                 imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
+                youtubeUrl="https://www.youtube.com/shorts/9Bqm14hCntg" 
               />
               <MeditationCard
                 title="Meditation for mornings"
                 duration="20 min"
                 imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg?w=800&h=450&c=crop"
-                youtubeUrl="https://www.youtube.com/watch?v=2Yf3e2qjz3Y" 
+                youtubeUrl="https://www.youtube.com/watch?v=lEKDob0LwRM" 
               />
               <MeditationCard
                 title="40 Minute Pomodoro for Studying"

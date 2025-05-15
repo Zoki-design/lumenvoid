@@ -32,8 +32,7 @@ export default function MeditationCard({
       withTiming(0.98, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
-    // YouTube URL руу шилжих
-    Linking.openURL(youtubeUrl); // Энэ газар YouTube линк рүү нэвтрэх болно
+    Linking.openURL(youtubeUrl);
   };
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -65,7 +64,6 @@ export default function MeditationCard({
   );
 }
 
-// Стилүүд
 const styles = StyleSheet.create({
   card: {
     height: 100,
