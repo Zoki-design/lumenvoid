@@ -3,29 +3,30 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
+// PNG image imports
 const focusOptions = [
   {
     title: 'Work',
     subtitle: 'productive, growth',
-    icon: require('../../assets/icons/suitcase 1.svg'), 
+    icon: require('../../assets/icons/suitcase1.png'),
     bgColor: '#E3F4F9',
   },
   {
     title: 'Health',
     subtitle: 'physical, mental',
-    icon: require('../../assets/icons/crystal-ball 1.svg'),
+    icon: require('../../assets/icons/crystal-ball1.png'),
     bgColor: '#E6F8E7',
   },
   {
     title: 'Personal',
     subtitle: 'hobbies, skills',
-    icon: require('../../assets/icons/lotus 1.svg'),
+    icon: require('../../assets/icons/lotus1.png'),
     bgColor: '#FFF7E1',
   },
   {
     title: 'Social',
     subtitle: 'family, friends',
-    icon: require('../../assets/icons/arrow1.svg'),
+    icon: require('../../assets/icons/high-five1.png'),
     bgColor: '#F0E7FD',
   },
 ];
@@ -43,12 +44,15 @@ const FocusScreen = () => {
       </View>
 
       {/* Question */}
-      <Text style={styles.questionText}>What’s your Main Focus{'\n'}for today?</Text>
+      <Text style={styles.questionText}>What’s your Main Focus for today?</Text>
 
       {/* Focus Options */}
       <View style={styles.grid}>
         {focusOptions.map((item, index) => (
-          <TouchableOpacity key={index} style={[styles.card, { backgroundColor: item.bgColor }]}>
+          <TouchableOpacity
+            key={index}
+            style={[styles.card, { backgroundColor: item.bgColor }]}
+          >
             <Image source={item.icon} style={styles.icon} resizeMode="contain" />
             <Text style={styles.cardTitle}>{item.title}</Text>
             <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
@@ -57,7 +61,7 @@ const FocusScreen = () => {
       </View>
 
       {/* Button */}
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/calendar')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)')}>
         <Text style={styles.buttonText}>Go to Dashboard</Text>
       </TouchableOpacity>
     </View>

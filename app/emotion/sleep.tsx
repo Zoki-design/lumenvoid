@@ -1,37 +1,77 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Slider from '@react-native-community/slider';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import Slider from '@react-native-community/slider'; // Native slider
 
-const Sleep = () => {
-  const [value, setValue] = useState(5);
+const Sleep: React.FC = () => {
+  const [value, setValue] = useState<number>(5);
   const router = useRouter();
 
-  const handleNext = () => {
-    // Pass the sleep value as a parameter to the result screen
-    router.push(`/emotion/result?sleep=${value}`);
+  const handleNext = (): void => {
+    router.push(`/emotion/todayfocus?sleep=${value}`);
+  };
+
+  const getColor = (): string => {
+    if (value <= 3) return 'red';
+    if (value <= 7) return 'orange';
+    return 'green';
+  };
+
+  const sleepIcons = {
+    bad: require('@/assets/icons/mad1.png'),
+    neutral: require('@/assets/icons/meh1.png'),
+    good: require('@/assets/icons/happy1.png'),
+  };
+
+  const getSleepIcon = (): any => {
+    if (value <= 3) return sleepIcons.bad;
+    if (value <= 7) return sleepIcons.neutral;
+    return sleepIcons.good;
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>How is your Sleep Quality?</Text>
 
-      {/* Vertical Slider Container */}
-      <View style={styles.sliderContainer}>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={10}
-          step={1}
-          value={value}
-          onValueChange={setValue}
-          minimumTrackTintColor="#FFA726"
-          maximumTrackTintColor="#ddd"
-          thumbTintColor="#FFA726"
-        />
+      <View style={styles.sliderSection}>
+        {Platform.OS === 'web' ? (
+          <input
+            type="range"
+            min={0}
+            max={10}
+            step={1}
+            value={value}
+            onChange={(e) => setValue(parseInt(e.target.value))}
+            style={{
+              width: 300,
+              appearance: 'none',
+              height: 8,
+              backgroundColor: '#ddd',
+              borderRadius: 5,
+              outline: 'none',
+              accentColor: '#5a4fcf',
+            }}
+          />
+        ) : (
+          <Slider
+            style={{ width: 300 }}
+            minimumValue={0}
+            maximumValue={10}
+            step={1}
+            value={value}
+            onValueChange={setValue}
+            minimumTrackTintColor="#FFA726"
+            maximumTrackTintColor="#ddd"
+            thumbTintColor="#5a4fcf"
+          />
+        )}
       </View>
 
-      <Text style={styles.valueLabel}>{value}/10</Text>
+      <Text style={[styles.valueLabel, { color: getColor() }]}>{value}/10</Text>
+
+      <View style={styles.sleepIconContainer}>
+        <Image source={getSleepIcon()} style={styles.sleepIcon} />
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleNext}>
         <Text style={styles.buttonText}>Next</Text>
@@ -53,24 +93,25 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 40,
+    marginBottom: 20,
     textAlign: 'center',
   },
-  sliderContainer: {
-    height: 300,  // Set the height of the slider container (longer slider)
-    width: 20,
-    justifyContent: 'center',
+  sliderSection: {
     alignItems: 'center',
-  },
-  slider: {
-    width: 40,  // Keep the width small to maintain the vertical slider look
-    height: 300, // Make the slider longer by increasing the height
-    transform: [{ rotate: '90deg' }],  // Rotate the slider to be vertical
+    marginBottom: 40,
   },
   valueLabel: {
+    marginTop: 20,
     fontSize: 18,
-    marginTop: 10,
-    color: '#333',
+  },
+  sleepIconContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  sleepIcon: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
   },
   button: {
     marginTop: 40,

@@ -32,10 +32,10 @@ export default function App() {
   ];
 
   const mainFocusItems = [
-    { label: 'Wellness', Image: require('../../assets/icons/lotus 1.png') },
-    { label: 'Work', Image: require('../../assets/icons/suitcase 1.png') },
+    { label: 'Wellness', Image: require('../../assets/icons/lotus1.png') },
+    { label: 'Work', Image: require('../../assets/icons/suitcase1.png') },
     { label: 'Achievement', Image: require('../../assets/icons/mission-statement 1 (1).png') },
-    { label: 'Community', Image: require('../../assets/icons/high-five 1.png') },
+    { label: 'Community', Image: require('../../assets/icons/high-five1.png') },
   ];
 
   const LOCAL_IP = '192.168.88.92';
