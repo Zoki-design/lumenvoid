@@ -239,7 +239,7 @@ export default function App() {
           accessibilityState={{ disabled: isSaving }}
         >
           <Text style={styles.saveButtonText}>
-            {isSaving ? 'Хадгалж байна...' : 'Өгөгдөл хадгалах'}
+            {isSaving ? 'Хадгалж байна...' : 'Save'}
           </Text>
         </TouchableOpacity>
       </ScrollView>
