@@ -9,21 +9,21 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Image
-          source={require('@/assets/images/logiin.jpg')}
-          style={styles.image}
-        />
-        <View style={styles.overlay}>
-          <TextTitle style={styles.title}>Welcome to Mindful</TextTitle>
+        <TextTitle style={styles.title}>Welcome to Mindful</TextTitle>
           <TextBody style={styles.subtitle}>
             Your journey to mental wellness starts here
           </TextBody>
-          
+
+          <View style={styles.overlay}>
+            <Image
+            source={require('@/assets/images/meditate.png')}
+            style={styles.image}
+          />
           <View style={styles.buttonContainer}>
-            <Link href="/sign-in" asChild>
+            <Link href="/sign-up" asChild>
               <Button 
-                title="Sign In" 
-                variant="primary"
+                title="Sign-In" 
+                variant="ghost"
                 fullWidth
                 style={styles.button}
                 onPress={() => {
@@ -31,11 +31,11 @@ export default function WelcomeScreen() {
                 }}
               />
             </Link>
-            
+
             <Link href="/sign-up" asChild>
               <Button 
                 title="Create Account" 
-                variant="outline"
+                variant="ghost"
                 fullWidth
                 style={styles.button}
                 onPress={() => {
@@ -53,36 +53,48 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background.primary,
+    backgroundColor: Colors.background.primary, // changed from primary
   },
   content: {
     flex: 1,
+    alignItems: 'center',
+    paddingTop: Layout.spacing.xl,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    marginBottom: Layout.spacing.lg,
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    padding: Layout.spacing.xl,
-    justifyContent: 'flex-end',
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: Layout.spacing.lg,
+    justifyContent: 'flex-start',
   },
   title: {
-    color: Colors.background.primary,
+    color: Colors.text.primary,
     fontSize: 36,
     marginBottom: Layout.spacing.sm,
+    textAlign: 'center',
   },
   subtitle: {
-    color: Colors.background.primary,
-    opacity: 0.9,
+    color: Colors.text.secondary,
     marginBottom: Layout.spacing.xl,
+    textAlign: 'center',
   },
   buttonContainer: {
+    width: '100%',
     gap: Layout.spacing.md,
   },
   button: {
     marginBottom: Layout.spacing.sm,
+    backgroundColor: Colors.background.secondary,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 2, 
   },
 });

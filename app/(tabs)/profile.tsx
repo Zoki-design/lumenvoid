@@ -45,7 +45,7 @@ export default function ProfileScreen() {
         <View style={styles.userCard}>
           <View style={styles.userInfo}>
             <View style={styles.avatarPlaceholder} />
-            <TouchableOpacity style={styles.userDetails} onPress={() => router.back()}>
+            <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../profile/user')}>
               <TextCaption style={styles.username}>User</TextCaption>
               <TextCaption>ID: 154654254545</TextCaption>
             </TouchableOpacity>
@@ -89,7 +89,7 @@ export default function ProfileScreen() {
         </TouchableOpacity>
 
         {/* Menu Items */}
-        {renderMenuItem(<BookUser size={20} />, 'Your Recordings', '../profile/recordings')}
+        {renderMenuItem(<BookUser size={20} />, 'Your Recordings', '../(tab)/calendar')}
         {renderMenuItem(<Calendar size={20} />, 'Friends', '../profile/friends')}
         {renderMenuItem(<ShieldCheck size={20} />, 'Achievements', '../profile/achievements')}
 
