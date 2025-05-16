@@ -44,7 +44,7 @@ export default function SignInScreen() {
         throw new Error(data.error || 'Sign-in failed');
       }
 
-      router.replace('/(tabs)');
+      router.replace('/emotion/question1');
     } catch (err: any) {
       console.error('❌ Sign-in error:', err.message);
       setError(err.message || 'Unable to sign in');
@@ -99,7 +99,7 @@ export default function SignInScreen() {
 
         <View style={styles.footer}>
           <TextBody>Don't have an account? </TextBody>
-          <Link href="../sign-up" asChild>
+          <Link href="../sign-in" asChild>
             <TouchableOpacity>
               <TextBody style={styles.link}>Sign Up</TextBody>
             </TouchableOpacity>

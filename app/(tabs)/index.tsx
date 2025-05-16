@@ -137,7 +137,7 @@ export default function HomeScreen() {
               style={styles.TodayInput}
               placeholderTextColor={themes.light.textSecondary}
             />
-            <Image style={styles.focusIcon} source={require('@/assets/icons/lotus 1.png')} />
+            <Image style={styles.focusIcon} source={require('@/assets/icons/lotus1.png')} />
           </Box>
 
           <Box style={styles.toDoList}>
@@ -198,7 +198,7 @@ export default function HomeScreen() {
               <Text style={styles.wisdomText}>
                 Don’t say yes to everything - you may be reaching the burnout.
               </Text>
-              <Image source={require('@/assets/icons/crystal-ball (1).png')} style={styles.magicBall} />
+              <Image source={require('@/assets/icons/crystal-ball1.png')} style={styles.magicBall} />
             </Box>
           </View>
         </View>
