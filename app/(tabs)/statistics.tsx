@@ -1,17 +1,23 @@
-import { View, Text, FlatList, Image } from 'react-native';
 import React from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import MoodCard from '../components/MoodCard';
 import { moods } from '@/assets/data/mockData';
 import { themes } from '@/constants/Colours';
-import { TextTitle, TextBody, TextRegular } from '@/app/components/StyledText';
-import { PieChart } from 'react-native-chart-kit';
-import { StyleSheet } from 'react-native';
+import { TextTitle, TextBody } from '@/app/components/StyledText';
+import { PieChart, LineChart } from 'react-native-chart-kit';
 import Box from '@/app/components/Box';
-import { Dimensions } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
-import { ScrollView } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
+
 const calendar = () => {
   const data = [
     {
@@ -57,12 +63,45 @@ const calendar = () => {
       legendFontSize: 12,
     },
   ];
+
+  const stats = [
+    { icon: require('@/assets/icons/lotus1.png'), value: 15 },
+    { icon: require('@/assets/icons/suitcase1.png'), value: 37 },
+    { icon: require('@/assets/icons/mission-statement 1 (1).png'), value: 5 },
+    { icon: require('@/assets/icons/high-five1.png'), value: 24 },
+  ];
+
+  const recommendations = [
+    {
+      id: '1',
+      title: 'Grug',
+      duration: '10 min',
+      studio: 'Dreamworks',
+      image: require('@/assets/images/mascot.png'),
+    },
+    {
+      id: '2',
+      title: 'Moana',
+      duration: '8 min',
+      studio: 'Disney',
+      image: require('@/assets/images/mascot.png'),
+    },
+    {
+      id: '3',
+      title: 'Puss',
+      duration: '12 min',
+      studio: 'Dreamworks',
+      image: require('@/assets/images/mascot.png'),
+    },
+  ];
   const renderMoodItem = ({ item }: { item: (typeof moods)[0] }) => (
     <MoodCard image={item.image} count={item.count} />
   );
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
+        {/* Moods */}
         <TextTitle style={styles.statheader}>Recorded moods</TextTitle>
         <Box style={styles.moodTrackerSection}>
           <FlatList
@@ -76,27 +115,27 @@ const calendar = () => {
           />
         </Box>
 
+        {/* Pie Chart */}
         <TextTitle style={styles.statheader}>Overall</TextTitle>
-        <View>
-          <View style={styles.container}>
-            <TextBody style={styles.title}>
-              Your anger moods have been increased drastically
-            </TextBody>
-            <PieChart
-              data={data}
-              width={screenWidth * 0.9}
-              height={220}
-              chartConfig={{
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              }}
-              accessor={'population'}
-              backgroundColor={'transparent'}
-              paddingLeft={'15'}
-              absolute
-            />
-          </View>
+        <View style={styles.container}>
+          <TextBody style={styles.title}>
+            Your anger moods have been increased drastically
+          </TextBody>
+          <PieChart
+            data={data}
+            width={screenWidth * 0.9}
+            height={220}
+            chartConfig={{
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            }}
+            accessor="population"
+            backgroundColor="transparent"
+            paddingLeft="15"
+            absolute
+          />
         </View>
 
+        {/* Sleep Quality */}
         <TextTitle style={styles.statheader}>Sleep Quality</TextTitle>
         <View style={styles.sleepContainer}>
           <View style={styles.sleepChartWrapper}>
@@ -106,11 +145,11 @@ const calendar = () => {
                 style={styles.faceIcon}
               />
               <Image
-                source={require('@/assets/icons/happy1.png')}
+                source={require('@/assets/icons/meh1.png')}
                 style={styles.faceIcon}
               />
               <Image
-                source={require('@/assets/icons/happy1.png')}
+                source={require('@/assets/icons/mad1.png')}
                 style={styles.faceIcon}
               />
             </View>
@@ -120,26 +159,26 @@ const calendar = () => {
                 datasets: [
                   {
                     data: [6.5, 7.0, 6.9, 7.5, 7.2, 7.8, 7.25],
-                    strokeWidth: 2,
+                    strokeWidth: 8, // илүү тод шугам
                   },
                 ],
               }}
               width={screenWidth * 0.5}
               height={120}
-              withDots={false}
-              withInnerLines={false}
-              withOuterLines={false}
-              withVerticalLabels={false}
-              withHorizontalLabels={false}
+              withDots={true}
+              withInnerLines={true}
+              withHorizontalLines={true}
+              withVerticalLines={true}
+              withOuterLines={true}
               chartConfig={{
                 backgroundColor: '#FFFFFF',
                 backgroundGradientFrom: '#FFFFFF',
                 backgroundGradientTo: '#FFFFFF',
-                decimalPlaces: 1,
-                color: (opacity = 1) => `rgba(148, 183, 108, ${opacity})`, 
-                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                color: (opacity = 1) => `rgba(148, 183, 108, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(148, 183, 108, ${opacity})`,
                 propsForBackgroundLines: {
                   stroke: '#E5E5E5',
+                  strokeDasharray: '', // үргэлжилсэн
                 },
               }}
               bezier
@@ -160,14 +199,120 @@ const calendar = () => {
             </Text>
           </View>
         </View>
+
+        <TextTitle style={styles.statheader}>Recorder Main Focuses</TextTitle>
+        <View style={styles.row}>
+          {stats.map((item, index) => (
+            <View key={index} style={styles.card}>
+              <Image source={item.icon} style={styles.icon} />
+              <Text style={styles.value}>{item.value}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.supportContainer}>
+          <View style={styles.bubbleWrapper}>
+            <View style={styles.bubble}>
+              <TextTitle style={styles.bubbleText}>
+                Have you been frustrated lately?
+              </TextTitle>
+              <TextTitle style={styles.bubbleText}>
+                It’s okay! We can work it out!
+              </TextTitle>
+            </View>
+            <View style={styles.bubbleArrow} />
+          </View>
+
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require('@/assets/images/mascot.png')}
+              style={styles.suppimage}
+            />
+          </View>
+        </View>
+        <TextBody style={styles.statheader}>Recomendation</TextBody>
+        <View style={styles.recommendList}>
+          <FlatList
+            data={recommendations}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.recommendList}
+            renderItem={({ item }) => (
+              <View style={styles.recommendCard}>
+                <View style={styles.recommendTextContainer}>
+                  <Text style={styles.recommendTitle}>{item.title}</Text>
+                  <Text style={styles.recommendSubtitle}>{item.duration}</Text>
+                  <Text style={styles.recommendSubtitle}>{item.studio}</Text>
+                </View>
+                <Image source={item.image} style={styles.recommendImage} />
+                <TouchableOpacity style={styles.recommendPlayButton}>
+                  <Text style={styles.recommendPlayIcon}>▶</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
       </View>
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
+  recommendList: {
+    paddingHorizontal: 16,
+  },
+  recommendCard: {
+    width: screenWidth * 0.6,
+    height: 100,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    marginRight: 16,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    zIndex: 0, 
+    position: 'relative',
+  },
+  recommendTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  recommendTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  recommendSubtitle: {
+    fontSize: 12,
+    color: '#777',
+  },
+  recommendImage: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
+    marginLeft: 10,
+  },
+  recommendPlayButton: {
+    backgroundColor: '#9F7AEA',
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+  recommendPlayIcon: {
+    color: '#fff',
+    fontSize: 16,
+  },
   moodTrackerSection: {
     margin: 20,
-    display: 'flex',
   },
   moodList: {
     paddingHorizontal: 20,
@@ -183,11 +328,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignItems: 'center',
     backgroundColor: '#fff',
-    flex: 1,
-    marginTop: 20,
-    marginLeft: 20,
+    marginHorizontal: 20,
     marginBottom: 20,
-    marginRight: 20,
+    borderRadius: 16,
+    padding: 10,
+    elevation: 2,
   },
   title: {
     fontSize: 16,
@@ -195,21 +340,6 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',
     paddingHorizontal: 20,
-  },
-  footer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-  },
-  meditateText: {
-    fontSize: 16,
-    marginTop: 10,
-    color: '#666',
   },
   sleepContainer: {
     flexDirection: 'row',
@@ -233,11 +363,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 100,
     marginRight: 10,
+    marginBottom: 20,
   },
   faceIcon: {
-    width: 20,
-    height: 20,
-    marginVertical: 5,
+    width: 30,
+    height: 30,
+    marginVertical: 6,
   },
   sleepInfo: {
     marginLeft: 10,
@@ -261,6 +392,86 @@ const styles = StyleSheet.create({
   sleepComment: {
     fontSize: 12,
     color: '#666',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginTop: 20,
+    marginBottom: 40,
+  },
+  card: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 3,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  icon: {
+    width: 32,
+    height: 32,
+    marginBottom: 8,
+    resizeMode: 'contain',
+  },
+  value: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  supportContainer: {
+    alignItems: 'center',
+    paddingTop: 20,
+    width: '100%',
+  },
+  bubbleWrapper: {
+    alignItems: 'center',
+    marginBottom: -10,
+  },
+  bubble: {
+    backgroundColor: '#9F7AEA',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    width: 350,
+    height: 100,
+  },
+  bubbleText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  bubbleArrow: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 20,
+    borderRightWidth: 20,
+    borderTopWidth: 20,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    transform: [{ rotate: '-135deg' }],
+    borderTopColor: '#9F7AEA',
+    marginTop: -4,
+    marginLeft: -150,
+    borderRadius: 8,
+  },
+  imageWrapper: {
+    height: 250,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+
+  suppimage: {
+    width: 500,
+    height: 500,
+    resizeMode: 'contain',
+    marginTop: -50,
   },
 });
 
