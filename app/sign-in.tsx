@@ -43,7 +43,7 @@ export default function SignInScreen() {
         throw new Error(data.error || 'Sign-in failed');
       }
 
-      router.replace('/emotion/question1');
+      router.replace('/emotion/0');
     } catch (err: any) {
       console.error('❌ Sign-in error:', err.message);
       setError(err.message || 'Unable to sign in');

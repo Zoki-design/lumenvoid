@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 485a0625d6c8f2fce25c31a17117e4121a5bfccb
 const app = express();
 
 // Middleware

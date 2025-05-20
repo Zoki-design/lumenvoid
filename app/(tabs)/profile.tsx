@@ -11,20 +11,25 @@ import { TextCaption, TextSubheading } from '@/app/components/StyledText';
 import Card from '@/app/components/Card';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Layout from '@/constants/Layout';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function ProfileScreen() {
   const router = useRouter();
 
-  const renderMenuItem = (icon: React.ReactNode, title: string, route?: string) => (
-    <TouchableOpacity
-      style={styles.menuItem}
-      onPress={() => route && router.back()}
-    >
-      <View style={styles.menuIcon}>{icon}</View>
-      <TextCaption style={styles.menuText}>{title}</TextCaption>
-    </TouchableOpacity>
-  );
+  const renderMenuItem = (iconName: string, title: string, route?: string) => (
+  <TouchableOpacity
+    style={styles.menuItem}
+    onPress={() => route && router.back()}
+  >
+    <View style={styles.menuIcon}>
+      <Ionicons name={iconName as any} size={20} color="#776F89" />
+    </View>
+    <TextCaption style={styles.menuText}>{title}</TextCaption>
+    <Ionicons name="chevron-forward" size={16} color="#B0B0B0" />
+  </TouchableOpacity>
+);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,12 +40,14 @@ export default function ProfileScreen() {
           <View style={styles.userInfo}>
             <View style={styles.avatarPlaceholder} />
             <TouchableOpacity style={styles.userDetails} onPress={() => router.push('../profile/user')}>
-              <TextCaption style={styles.username}>User</TextCaption>
-              <TextCaption>ID: 154654254545</TextCaption>
+              <View>
+                <TextCaption style={styles.username}>N/A</TextCaption>
+                <TextCaption>ID: loading</TextCaption>
+              </View>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => router.push('../profile/settings')}>
-            
+            <Ionicons name="settings-outline" size={22} color="#776F89" />
           </TouchableOpacity>
         </View>
 
@@ -78,13 +85,13 @@ export default function ProfileScreen() {
         </TouchableOpacity>
 
         {/* Menu Items */}
-        {renderMenuItem( 'Your Recordings', '../(tab)/calendar')}
-        {renderMenuItem('Friends', '../profile/friends')}
-        {renderMenuItem( 'Achievements', '../profile/achievements')}
+        {renderMenuItem('musical-notes-outline', 'Your Recordings', '/')}
+        {renderMenuItem('people-outline', 'Friends', '/')}
+        {renderMenuItem('trophy-outline', 'Achievements', '/')}
 
         <TextCaption style={{ marginTop: 10, marginBottom: 4 }}>More</TextCaption>
-        {renderMenuItem( 'Community', '../profile/community')}
-        {renderMenuItem( 'Useful Links', '../profile/help')}
+        {renderMenuItem('chatbox-ellipses-outline', 'Community', '/')}
+        {renderMenuItem('link-outline', 'Useful Links', '/')}
       </ScrollView>
     </SafeAreaView>
   );
