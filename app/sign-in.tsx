@@ -1,12 +1,11 @@
 import { View, StyleSheet, TouchableOpacity, Platform, KeyboardAvoidingView, Alert } from 'react-native';
 import { Link, router } from 'expo-router';
-import { TextTitle, TextBody, TextCaption } from '@/components/StyledText';
+import { TextTitle, TextBody, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+import Input from '@/app/components/Input';
+import Button from '@/app/components/Button';
 import { useState } from 'react';
-import { Mail, Lock, ArrowLeft } from 'lucide-react-native';
 
 const LOCAL_IP = '192.168.88.92'; 
 const baseURL = Platform.OS === 'web'
@@ -59,7 +58,7 @@ export default function SignInScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <ArrowLeft size={24} color={Colors.text.primary} />
+        
       </TouchableOpacity>
 
       <View style={styles.content}>
@@ -77,7 +76,7 @@ export default function SignInScreen() {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          leftIcon={<Mail size={20} color={Colors.text.tertiary} />}
+          leftIcon={""}
         />
 
         <Input
@@ -86,7 +85,7 @@ export default function SignInScreen() {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-          leftIcon={<Lock size={20} color={Colors.text.tertiary} />}
+          leftIcon={""}
         />
 
         <Button

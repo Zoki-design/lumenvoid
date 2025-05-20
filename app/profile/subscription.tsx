@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { TextSubheading, TextCaption } from '@/components/StyledText';
-import { X } from 'lucide-react-native';
+import { TextSubheading, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
-import Box from '@/components/Box';
+import Box from '@/app/components/Box';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -40,7 +39,6 @@ export default function SubscriptionScreen() {
           style={styles.closeButton}
           onPress={() => router.back()}
         >
-          <X size={24} color={Colors.text.tertiary} />
         </TouchableOpacity>
 
         <TextSubheading style={styles.header}>Premium Pass</TextSubheading>

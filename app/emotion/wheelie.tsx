@@ -3,13 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-nati
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 
-// SVGs
-import HappyFace from '@/assets/icons/happy1.svg';
-import SadFace from '@/assets/icons/sad1.svg';
-import AngryFace from '@/assets/icons/mad1.svg';
-import TiredFace from '@/assets/icons/meh1.svg';
-import DepressedFace from '@/assets/icons/depressed1.svg';
-import AnxiousFace from '@/assets/icons/anxious1.svg';
+import HappyFace from '@/assets/svg/happy1.svg';
+import SadFace from '@/assets/svg/sad1.svg';
+import AngryFace from '@/assets/svg/mad1.svg';
+import TiredFace from '@/assets/svg/meh1.svg';
+import DepressedFace from '@/assets/svg/depressed1.svg';
+import AnxiousFace from '@/assets/svg/anxious1.svg';
 
 const { width } = Dimensions.get('window');
 const RADIUS = width * 0.2;

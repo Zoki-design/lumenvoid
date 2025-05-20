@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TextCaption, TextSmall } from './StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import { Eye, EyeOff } from 'lucide-react-native';
+
 
 interface InputProps {
   label?: string;
@@ -62,8 +62,6 @@ export default function Input({
           style={[
             styles.input,
             multiline && styles.multiline,
-            leftIcon && styles.inputWithLeftIcon,
-            (rightIcon || secureTextEntry) && styles.inputWithRightIcon,
             inputStyle,
           ]}
           placeholder={placeholder}
@@ -86,8 +84,8 @@ export default function Input({
             onPress={togglePasswordVisibility}
           >
             {hidePassword ? 
-              <Eye size={20} color={Colors.text.tertiary} /> : 
-              <EyeOff size={20} color={Colors.text.tertiary} />
+              <TextSmall style={{ color: Colors.text.secondary }}>Show</TextSmall> :
+              <TextSmall style={{ color: Colors.text.secondary }}>Hide</TextSmall>
             }
           </TouchableOpacity>
         ) : rightIcon ? (

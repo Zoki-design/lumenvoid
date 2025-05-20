@@ -5,7 +5,6 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
-import { Chrome as Home, BookHeart, PencilLine, Users, User } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -28,11 +27,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="statistics"
+        name="library"
         options={{
           title: '',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome6 name="chart-simple" size={30} color={color} />
+            <Entypo name="book" size={32} color={color} />
           ),
         }}
       />
@@ -41,19 +40,18 @@ export default function TabLayout() {
         options={{
           title: '',
           tabBarIcon: ({ color, size }) => (
-          <View style={styles.aibuddyIconWrapper}>
-            <FontAwesome name="paw" size={45} color="white" />
-          </View>
-        ),
+            <View style={styles.aibuddyIconWrapper}>
+              <FontAwesome name="paw" size={45} color="white" />
+            </View>
+          ),
         }}
       />
-
       <Tabs.Screen
-        name="calendar"
+        name="statistics"
         options={{
           title: '',
           tabBarIcon: ({ color, size }) => (
-            <Entypo name="calendar" size={30} color={color} />
+            <FontAwesome6 name="chart-simple" size={30} color={color} />
           ),
         }}
       />
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: themes.light.button1,
     alignItems: 'center',
     height: 70,
-    width: 70,  
+    width: 70,
     padding: 10,
     borderRadius: 50,
     marginTop: -22,

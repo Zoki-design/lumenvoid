@@ -103,13 +103,13 @@ const ResultsScreen = () => {
 
       {/* CTA */}
       <Text style={styles.footerText}>We Can Work Together for the better you!</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/calendar')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)')}>
         <Text style={styles.buttonText}>Go to Dashboard</Text>
       </TouchableOpacity>
 
       {/* Mascot Image */}
       <Image
-        source={require('../../assets/images/meditate.svg')} // Replace with your mascot path
+        source={require('@/assets/images/meditate.png')} // Replace with your mascot path
         style={styles.mascot}
         resizeMode="contain"
       />

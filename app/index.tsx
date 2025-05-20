@@ -1,9 +1,9 @@
 import { View, StyleSheet, Image } from 'react-native';
 import { Link } from 'expo-router';
-import { TextTitle, TextBody } from '@/components/StyledText';
+import { TextTitle, TextBody } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import Button from '@/components/Button';
+import Button from '@/app/components/Button';
 
 export default function WelcomeScreen() {
   return (

@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import { TextTitle } from '@/components/StyledText';
+import { TextTitle } from '@/app/components/StyledText';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { themes } from '@/constants/Colours';
@@ -17,10 +17,10 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Layout from '@/constants/Layout';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MoodCard from '@/components/MoodCard';
-import MeditationCard from '@/components/MeditationCard';
+import MoodCard from '@/app/components/MoodCard';
+import MeditationCard from '@/app/components/MeditationCard';
 import { useState } from 'react';
-import Box from '@/components/Box';
+import Box from '@/app/components/Box';
 import { moods } from '@/assets/data/mockData';
 import Animated, {
   useSharedValue,
@@ -62,11 +62,6 @@ export default function HomeScreen() {
     setSelectedMood('Happy');
     saveMoodToDB('Happy');
     router.push('/emotion/wheelie');
-  };
-
-  const handleAddTodo = () => {
-    handlePressBell();
-    router.push('/today/todo');
   };
 
   const handleAddToday = () => {
@@ -140,17 +135,6 @@ export default function HomeScreen() {
             <Image style={styles.focusIcon} source={require('@/assets/icons/lotus1.png')} />
           </Box>
 
-          <Box style={styles.toDoList}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Text style={styles.Todo}>To-Do:</Text>
-              <TouchableOpacity onPress={handleAddTodo}>
-                <MaterialIcons name="edit-square" size={18} color={themes.light.textSecondary} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleAddTodo} style={styles.plusIcon}>
-                <FontAwesome5 name="plus" size={50} color={themes.light.accent} />
-              </TouchableOpacity>
-            </View>
-          </Box>
         </View>
 
         <View style={styles.section}>
@@ -263,8 +247,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 50,
     height: 50,
-    top: 10,
-    left: 15,
+    top: -10,
+
   },
   line: {
     width: 4,

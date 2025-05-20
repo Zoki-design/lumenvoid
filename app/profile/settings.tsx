@@ -1,8 +1,7 @@
 import React, { useState, ReactNode } from 'react';
 import { View, Switch, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { TextSubheading, TextCaption } from '@/components/StyledText';
-import { ChevronRight } from 'lucide-react-native';
+import { TextSubheading, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,7 +18,7 @@ export default function SettingsScreen() {
     const content = (
       <View style={styles.item}>
         <TextSubheading style={styles.itemText}>{title}</TextSubheading>
-        {rightElement ?? <ChevronRight size={20} color={Colors.text.tertiary} />}
+        {rightElement ?? <View/>}
       </View>
     );
 

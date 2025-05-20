@@ -1,4 +1,4 @@
-import AIChat from "@/components/AIChat";
+import AIChat from "@/app/components/AIChat";
 
 
 export default function AIBuddyScreen() {

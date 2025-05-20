@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   useWindowDimensions,
 } from 'react-native';
-import { colors, responses } from '../constants/questions';
+import { colors, responses } from '../../constants/questions';
 import { RelativePathString, useRouter } from 'expo-router';
 
 interface Props {

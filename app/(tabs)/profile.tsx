@@ -7,18 +7,8 @@ import {
   Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { TextCaption, TextSubheading } from '@/components/StyledText';
-import {
-  ChevronRight,
-  BookUser,
-  Calendar,
-  ShieldCheck,
-  BellRing,
-  Settings,
-  HelpCircle,
-  Crown,
-} from 'lucide-react-native';
-import Card from '@/components/Card';
+import { TextCaption, TextSubheading } from '@/app/components/StyledText';
+import Card from '@/app/components/Card';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Layout from '@/constants/Layout';
@@ -33,7 +23,6 @@ export default function ProfileScreen() {
     >
       <View style={styles.menuIcon}>{icon}</View>
       <TextCaption style={styles.menuText}>{title}</TextCaption>
-      <ChevronRight size={20} color={Colors.text.tertiary} />
     </TouchableOpacity>
   );
 
@@ -51,7 +40,7 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => router.push('../profile/settings')}>
-            <Settings size={20} color={Colors.text.tertiary} />
+            
           </TouchableOpacity>
         </View>
 
@@ -75,7 +64,7 @@ export default function ProfileScreen() {
           onPress={() => router.push('../profile/subscription')}
         >
           <View style={{ flex: 1 }}>
-            <Crown size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
+          
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
               <TextSubheading
                 style={{ color: '#FFFFFF', fontWeight: '400', fontSize: 16 }}
@@ -89,13 +78,13 @@ export default function ProfileScreen() {
         </TouchableOpacity>
 
         {/* Menu Items */}
-        {renderMenuItem(<BookUser size={20} />, 'Your Recordings', '../(tab)/calendar')}
-        {renderMenuItem(<Calendar size={20} />, 'Friends', '../profile/friends')}
-        {renderMenuItem(<ShieldCheck size={20} />, 'Achievements', '../profile/achievements')}
+        {renderMenuItem( 'Your Recordings', '../(tab)/calendar')}
+        {renderMenuItem('Friends', '../profile/friends')}
+        {renderMenuItem( 'Achievements', '../profile/achievements')}
 
         <TextCaption style={{ marginTop: 10, marginBottom: 4 }}>More</TextCaption>
-        {renderMenuItem(<BellRing size={20} />, 'Community', '../profile/community')}
-        {renderMenuItem(<HelpCircle size={20} />, 'Useful Links', '../profile/help')}
+        {renderMenuItem( 'Community', '../profile/community')}
+        {renderMenuItem( 'Useful Links', '../profile/help')}
       </ScrollView>
     </SafeAreaView>
   );
