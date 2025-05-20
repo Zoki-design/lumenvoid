@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
-const Todo = require('./models/Todo');
 
 const app = express();
 
@@ -32,7 +31,7 @@ mongoose.connect(MONGO_URI, {
     process.exit(1);
   });
 
-// Schemas
+// Schemasnpm 
 const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
