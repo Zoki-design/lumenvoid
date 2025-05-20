@@ -20,7 +20,7 @@ export default function WelcomeScreen() {
             style={styles.image}
           />
           <View style={styles.buttonContainer}>
-            <Link href="/sign-up" asChild>
+            <Link href="/sign-in" asChild>
               <Button 
                 title="Sign-In" 
                 variant="ghost"
