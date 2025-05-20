@@ -8,6 +8,9 @@ const questions = [
   'How often do you feel angry?',
   'How often do you feel sad?',
   'How often do you feel anxious?',
+  'How often do you feel bored?',
+  'How often do you feel sad?',
+  'How often do you feel anxious?',
 ];
 
 export default function DynamicQuestionScreen() {
