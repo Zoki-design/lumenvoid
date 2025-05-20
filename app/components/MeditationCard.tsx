@@ -16,14 +16,14 @@ interface MeditationCardProps {
   title: string;
   duration: string;
   imageUrl: string;
-  youtubeUrl: string; // YouTube URL
+  youtubeID: string; // YouTube URL
 }
 
 export default function MeditationCard({ 
   title, 
   duration, 
   imageUrl, 
-  youtubeUrl 
+  youtubeID 
 }: MeditationCardProps) {
   const scale = useSharedValue(1);
 
@@ -32,7 +32,7 @@ export default function MeditationCard({
       withTiming(0.98, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
-    Linking.openURL(youtubeUrl);
+    Linking.openURL(youtubeID);
   };
 
   const animatedStyle = useAnimatedStyle(() => {

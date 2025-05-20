@@ -5,10 +5,12 @@ import { TextTitle, TextSubheading, TextCaption } from '@/app/components/StyledT
 import { themes } from '@/constants/Colours';
 import Box from '@/app/components/Box';
 import Card from '@/app/components/Card';
+import Feather from '@expo/vector-icons/Feather';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MeditationCard from '@/app/components/MeditationCard';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
-import { meditations } from '@/assets/data/mockData';
+import { meditations } from '@/assets/data/MeditationData';
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
@@ -86,7 +88,7 @@ export default function MeditateScreen() {
       <View style={styles.header}>
         <View style={styles.searchContainer}>
           <Animated.View style={[styles.searchInputContainer, searchContainerStyle]}>
-            
+            <Feather name="search" size={20} style={[styles.searchIcon]} />
             <TextInput
               style={styles.searchInput}
               placeholder="Browse Library ..."
@@ -100,11 +102,10 @@ export default function MeditateScreen() {
           
           <Animated.View style={filterButtonStyle}>
             <TouchableOpacity style={styles.filterButton}>
-
+              <FontAwesome6 name="filter" size={18} color={themes.light.textSecondary} />
             </TouchableOpacity>
           </Animated.View>
         </View>
-
         <FlatList
           data={categories}
           renderItem={renderCategoryItem}
@@ -116,6 +117,8 @@ export default function MeditateScreen() {
         />
       </View>
 
+
+      
       <FlatList
         data={filteredMeditations}
         renderItem={({ item }) => (
@@ -124,7 +127,7 @@ export default function MeditateScreen() {
               title={item.title}
               duration={item.duration}
               imageUrl={item.imageUrl}
-              youtubeUrl="https://www.youtube.com/watch?v=lEKDob0LwRM"
+              youtubeID={item.youtubeID ?? ''}
             />
           </TouchableOpacity>
         )}
@@ -153,7 +156,13 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: Layout.spacing.md,
     paddingBottom: Layout.spacing.md,
-  },
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+},
+
   title: {
     color: themes.light.textPrimary,
     fontSize: 16,
@@ -177,6 +186,7 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     marginRight: Layout.spacing.sm,
+    color: themes.light.textSecondary,
   },
   searchInput: {
     flex: 1,

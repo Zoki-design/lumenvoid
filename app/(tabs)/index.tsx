@@ -21,7 +21,7 @@ import MoodCard from '@/app/components/MoodCard';
 import MeditationCard from '@/app/components/MeditationCard';
 import { useState } from 'react';
 import Box from '@/app/components/Box';
-import { moods } from '@/assets/data/mockData';
+import { moods } from '@/assets/data/Data';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
