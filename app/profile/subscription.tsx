@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { TextSubheading, TextCaption } from '@/app/components/StyledText';
 import Colors from '@/constants/Colors';
-import Box from '@/app/components/Box';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -46,8 +45,8 @@ export default function SubscriptionScreen() {
           Completely free for 7 days! You can cancel anytime
         </TextCaption>
 
-        {renderPlan('Annual Pass', '$34.99/y', 'Free for 7 days (first time)', 'annual')}
-        {renderPlan('Monthly Pass', '$4.99/month', '', 'monthly')}
+        {renderPlan('Annual Pass', '$14.99/y', 'Free for 7 days (first time)', 'annual')}
+        {renderPlan('Monthly Pass', '$1.99/month', '', 'monthly')}
 
         {renderBenefit('Ad-free\nEnjoy record and edit without any ads!')}
         {renderBenefit('In-depth Analysis\nGain more insights about you and your life')}
@@ -55,11 +54,11 @@ export default function SubscriptionScreen() {
         {renderBenefit('Up to 3 Photos\nRecord more pictures of your day!')}
 
         <TouchableOpacity style={styles.trialButton}>
-          <TextSubheading style={styles.trialButtonText}>Begin Free Trial</TextSubheading>
+          <TextSubheading style={styles.trialButtonText}>Begin Ad Free Trial</TextSubheading>
         </TouchableOpacity>
 
         <TextCaption style={styles.footerText}>
-          $34.99 per year after trial, cancel anytime
+          $14.99 per year after trial, cancel anytime
         </TextCaption>
       </ScrollView>
     </SafeAreaView>

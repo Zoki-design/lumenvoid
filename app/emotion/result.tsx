@@ -7,7 +7,6 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
 import { PieChart, LineChart } from 'react-native-chart-kit';
 import { useRouter } from 'expo-router';
 
@@ -82,6 +81,7 @@ const ResultsScreen = () => {
             data={{
               labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
               datasets: [{ data: [4, 4.5, 3, 5, 4, 3.5, 2.5] }],
+              
             }}
             width={screenWidth * 0.5}
             height={120}
