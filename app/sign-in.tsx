@@ -18,39 +18,47 @@ export default function SignInScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSignIn = async () => {
-    setError(null);
+const handleSignIn = async () => {
+  setError(null);
 
-    if (!email || !password) {
-      setError('Please enter both email and password');
-      return;
+  if (!email || !password) {
+    setError('Please enter both email and password');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await fetch(`${baseURL}/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Sign-in failed');
     }
 
-    setLoading(true);
+    // ✅ Шалгаж байна: hasAnsweredQuestions backend-аас ирэх ёстой
+    const hasAnswered = data.user?.hasAnsweredQuestions;
 
-    try {
-      const response = await fetch(`${baseURL}/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Sign-in failed');
-      }
-
+    if (hasAnswered) {
+      router.replace('/(tabs)');
+    } else {
       router.replace('/emotion/0');
-    } catch (err: any) {
-      console.error('❌ Sign-in error:', err.message);
-      setError(err.message || 'Unable to sign in');
-    } finally {
-      setLoading(false);
     }
-  };
+
+  } catch (err: any) {
+    console.error('❌ Sign-in error:', err.message);
+    setError(err.message || 'Unable to sign in');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <KeyboardAvoidingView
