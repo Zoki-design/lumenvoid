@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import Colors from '@/constants/Colors';
 
 // PNG image imports
 const focusOptions = [
@@ -71,9 +72,10 @@ const FocusScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EDEAFD',
+    backgroundColor: Colors.background.secondary,
     padding: 16,
     justifyContent: 'center',
+
   },
   header: {
     flexDirection: 'row',

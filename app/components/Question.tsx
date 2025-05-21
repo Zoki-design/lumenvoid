@@ -21,7 +21,7 @@ const Question: React.FC<Props> = ({ question, questionIndex, onNextRoute }) => 
   const [selected, setSelected] = React.useState<number | null>(null);
   const { width, height } = useWindowDimensions();
 
-  const progressPercent = ((questionIndex + 1) / 4) * 100;
+  const progressPercent = ((questionIndex + 1) / 7) * 100;
   const paddingHorizontal = width * 0.06;
   const circleSize = Math.min(width * 0.08, 36); // scale but limit to max size
 

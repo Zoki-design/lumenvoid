@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
+const Todo = require('./models/Todo');
+
 const app = express();
 
 // Middleware
