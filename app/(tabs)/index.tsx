@@ -21,7 +21,7 @@ import MoodCard from '@/app/components/MoodCard';
 import MeditationCard from '@/app/components/MeditationCard';
 import { useState } from 'react';
 import Box from '@/app/components/Box';
-import { moods } from '@/assets/data/mockData';
+import { moods } from '@/assets/data/Data';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -154,19 +154,19 @@ export default function HomeScreen() {
                 title="Anxiety Relief"
                 duration="15 min"
                 imageUrl="https://images.pexels.com/photos/1447092/pexels-photo-1447092.png"
-                youtubeUrl="https://www.youtube.com/shorts/5MFSBMcYZTw"
+                youtubeURL="https://www.youtube.com/shorts/5MFSBMcYZTw"
               />
               <MeditationCard
                 title="Mindful Breathing"
                 duration="10 min"
                 imageUrl="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg"
-                youtubeUrl="https://www.youtube.com/shorts/9Bqm14hCntg"
+                youtubeURL="https://www.youtube.com/shorts/9Bqm14hCntg"
               />
               <MeditationCard
                 title="Meditation for mornings"
                 duration="20 min"
                 imageUrl="https://cdn.britannica.com/99/223399-138-B7B4A9EA/did-you-know-meditation.jpg"
-                youtubeUrl="https://www.youtube.com/watch?v=lEKDob0LwRM"
+                youtubeURL="https://www.youtube.com/watch?v=lEKDob0LwRM"
               />
             </View>
           </ScrollView>
