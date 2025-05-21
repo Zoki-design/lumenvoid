@@ -86,7 +86,6 @@ export default function ProfileScreen() {
 
         {/* Menu Items */}
         {renderMenuItem('musical-notes-outline', 'Your Recordings', '/')}
-        {renderMenuItem('people-outline', 'Friends', '/')}
         {renderMenuItem('trophy-outline', 'Achievements', '/')}
 
         <TextCaption style={{ marginTop: 10, marginBottom: 4 }}>More</TextCaption>

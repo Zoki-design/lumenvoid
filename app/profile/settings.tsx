@@ -45,18 +45,6 @@ export default function SettingsScreen() {
         {renderItem('Restore Purchases', () => router.back())}
         {renderItem('Cancel Subscription', () => router.back())}
 
-        <TextCaption style={styles.sectionTitle}>Social and Friend</TextCaption>
-        {renderItem('Blocked Users', () => router.back())}
-        {renderItem(
-          'Hide from Global Ranking',
-          undefined,
-          <Switch
-            value={hideFromRanking}
-            onValueChange={setHideFromRanking}
-            thumbColor={hideFromRanking ? Colors.primary.default : '#f4f3f4'}
-          />
-        )}
-
         <TextCaption style={styles.sectionTitle}>Notification</TextCaption>
         {renderItem(
           'Daily Reminder',
