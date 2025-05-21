@@ -30,7 +30,7 @@ mongoose.connect(MONGO_URI, {
     process.exit(1);
   });
 
-// Schemas
+// Schemasnpm 
 const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },

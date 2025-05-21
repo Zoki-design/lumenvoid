@@ -55,16 +55,18 @@ export default function MeditateScreen() {
     };
   });
 
-  const filteredMeditations = meditations.filter(meditation => {
-    const matchesSearch = meditation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          meditation.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || 
-                            meditation.category.toLowerCase() === selectedCategory.toLowerCase();
-    
+  const filteredMeditations = meditations.filter((meditation) => {
+    const matchesSearch =
+      meditation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      meditation.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === 'all' ||
+      meditation.category.toLowerCase() === selectedCategory.toLowerCase();
+
     return matchesSearch && matchesCategory;
   });
 
-  const renderCategoryItem = ({ item }: { item: typeof categories[0] }) => (
+  const renderCategoryItem = ({ item }: { item: (typeof categories)[0] }) => (
     <TouchableOpacity
       style={[
         styles.categoryItem,
@@ -87,7 +89,9 @@ export default function MeditateScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <View style={styles.searchContainer}>
-          <Animated.View style={[styles.searchInputContainer, searchContainerStyle]}>
+          <Animated.View
+            style={[styles.searchInputContainer, searchContainerStyle]}
+          >
             <Feather name="search" size={20} style={[styles.searchIcon]} />
             <TextInput
               style={styles.searchInput}
@@ -99,10 +103,14 @@ export default function MeditateScreen() {
               onBlur={handleBlur}
             />
           </Animated.View>
-          
+
           <Animated.View style={filterButtonStyle}>
             <TouchableOpacity style={styles.filterButton}>
-              <FontAwesome6 name="filter" size={18} color={themes.light.textSecondary} />
+              <FontAwesome6
+                name="filter"
+                size={18}
+                color={themes.light.textSecondary}
+              />
             </TouchableOpacity>
           </Animated.View>
         </View>
@@ -116,31 +124,39 @@ export default function MeditateScreen() {
           ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         />
       </View>
-
-
-      
       <FlatList
         data={filteredMeditations}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => console.log('Open meditation', item.id)}>
+          <TouchableOpacity
+            onPress={() => console.log('Open meditation', item.id)}
+          >
             <MeditationCard
               title={item.title}
               duration={item.duration}
               imageUrl={item.imageUrl}
-              youtubeID={item.youtubeID ?? ''}
+              youtubeURL={item.youtubeURL ?? ''}
             />
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={
+          <>
+            <TextTitle style={styles.title}>Today's Recommendation</TextTitle>
+            
+          </>
+        }
         contentContainerStyle={styles.meditationsList}
         showsVerticalScrollIndicator={false}
       />
 
       <Card style={styles.featuredCard}>
         <View style={styles.featuredContent}>
-          <TextSubheading style={styles.featuredTitle}>Daily Practice</TextSubheading>
+          <TextSubheading style={styles.featuredTitle}>
+            Daily Practice
+          </TextSubheading>
           <TextCaption style={styles.featuredText}>
-            Maintain a regular meditation practice to see significant improvements in your mental wellbeing.
+            Maintain a regular meditation practice to see significant
+            improvements in your mental wellbeing.
           </TextCaption>
         </View>
       </Card>
