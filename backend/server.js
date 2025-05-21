@@ -5,6 +5,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
+<<<<<<< HEAD
+=======
+const Todo = require('./models/Todo');
+
+>>>>>>> 78ae4d7bf2eb4f9ec95d799fba8608811ff14afa
 const app = express();
 
 // Middleware
@@ -109,30 +114,6 @@ app.post('/signin', async (req, res) => {
   }
 });
 
-// Todos
-app.get('/todos', async (req, res) => {
-  try {
-    const todos = await Todo.find();
-    res.json(todos);
-  } catch (err) {
-    res.status(500).json({ error: 'Серверийн алдаа' });
-  }
-});
-
-app.post('/todos', async (req, res) => {
-  try {
-    const { text } = req.body;
-    if (!text || text.trim() === '') {
-      return res.status(400).json({ error: 'Todo хоосон байна' });
-    }
-
-    const newTodo = new Todo({ text });
-    await newTodo.save();
-    res.status(201).json({ message: 'Todo нэмэгдлээ', todo: newTodo });
-  } catch (err) {
-    res.status(500).json({ error: 'Серверийн алдаа' });
-  }
-});
 
 // POST: Mood хадгалах
 // app.post('/moods', async (req, res) => {

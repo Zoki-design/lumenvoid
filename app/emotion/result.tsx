@@ -13,12 +13,12 @@ import { useRouter } from 'expo-router';
 const screenWidth = Dimensions.get('window').width;
 
 const emotionsData = [
-  { label: 'Anxious', value: 3, color: '#DCA1FF' },
-  { label: 'Sad', value: 2, color: '#80D6FB' },
-  { label: 'Angry', value: 1, color: '#F49B54' },
-  { label: 'Bored', value: 5, color: '#FDBF50' },
-  { label: 'Happy', value: 1, color: '#A4D37C' },
-  { label: 'Calm', value: 2, color: '#60E8B1' },
+  { label: 'Anxious', value: 70, color: '#DCA1FF' },
+  { label: 'Sad', value: 45, color: '#80D6FB' },
+  { label: 'Angry', value: 32, color: '#F49B54' },
+  { label: 'Meh', value: 27, color: '#FDBF50' },
+  { label: 'Happy', value: 25, color: '#A4D37C' },
+  { label: 'Calm', value: 10, color: '#60E8B1' },
 ];
 
 const sleepData = {
@@ -126,24 +126,15 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10 },
-  rowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  analysisBox: {
-    flex: 1,
-    paddingLeft: 12,
-  },
-  analysisTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 6,
-  },
-  analysisText: {
-    fontSize: 14,
-    color: '#555',
-  },
+  progressRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  label: { width: 70, fontSize: 14 },
+  progressBar: { flex: 1, height: 8, borderRadius: 8, marginHorizontal: 10 },
+  percent: { width: 40, textAlign: 'right' },
+
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  analysisBox: { flex: 1, paddingLeft: 12 },
+  analysisTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 6 },
+  analysisText: { fontSize: 14, color: '#555' },
 
   sleepRow: {
     flexDirection: 'row',
