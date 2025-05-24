@@ -5,6 +5,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabLayout() {
   return (
@@ -47,11 +48,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="statistics"
+        name="history"
         options={{
           title: '',
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome6 name="chart-simple" size={30} color={color} />
+            <Ionicons name="time" size={32} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          title: '',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="notifications" size={32} color={color} />
           ),
         }}
       />
@@ -70,22 +80,19 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-  backgroundColor: 'white',
-  height: 70,
-  paddingBottom: 7,
-  paddingTop: 10,
-  borderRadius: 20,
-  marginHorizontal: 10,
-  bottom: 10,
-  // overflow: 'hidden',  <-- remove this line
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 5 },
-  shadowOpacity: 0.1,
-  shadowRadius: 10,
-  elevation: 5,
-},
-
-
+    backgroundColor: 'white',
+    height: 70,
+    paddingBottom: 7,
+    paddingTop: 10,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    bottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
   tabBarLabel: {
     fontFamily: 'PlusJakartaSans-Medium',
     fontSize: 12,
