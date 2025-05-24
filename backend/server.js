@@ -1,5 +1,4 @@
-require('dotenv').config(); // Load .env file
-
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -16,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error('❌ MONGO_URI тохиргоо байхгүй байна. .env файлыг шалгана уу.');
+  console.error('❌ MONGO_URI configuration missing. Check your .env file.');
   process.exit(1);
 }
 
@@ -24,22 +23,23 @@ mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => console.log('✅ MongoDB холбогдлоо'))
+  .then(() => console.log('✅ MongoDB connected successfully'))
   .catch(err => {
-    console.error('❌ MongoDB алдаа:', err);
+    console.error('❌ MongoDB connection error:', err);
     process.exit(1);
   });
 
-// Schemasnpm 
+// Schemas
 const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  mood: String,
-  date: { type: Date, default: Date.now },
+  hasAnsweredQuestions: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const MoodSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   mood: { type: String, required: true },
   journalEntry: { type: String, default: '' },
   affirmation: { type: String, default: '' },
@@ -49,14 +49,12 @@ const MoodSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 });
 
-
-
 const User = mongoose.model('User', UserSchema);
 const Mood = mongoose.model('Mood', MoodSchema);
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('🚀 Сервер амжилттай ажиллаж байна.');
+  res.send('🚀 Server is running successfully.');
 });
 
 // Signup
@@ -65,7 +63,7 @@ app.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Бүх талбарыг бөглөнө үү.' });
+      return res.status(400).json({ error: 'All fields are required.' });
     }
 
     const userExists = await User.findOne({ email });
@@ -73,14 +71,14 @@ app.post('/signup', async (req, res) => {
       return res.status(400).json({ error: 'Email already in use' });
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashed });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
-    res.status(201).json({ message: 'Хэрэглэгч амжилттай бүртгэгдлээ' });
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    console.error('❌ Signup алдаа:', err);
-    res.status(500).json({ error: 'Серверийн алдаа' });
+    console.error('❌ Signup error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -89,57 +87,46 @@ app.post('/signin', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ error: 'Имэйл болон нууц үг шаардлагатай.' });
+      return res.status(400).json({ error: 'Email and password are required.' });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ error: 'Имэйл бүртгэлгүй байна.' });
+      return res.status(401).json({ error: 'Email not registered.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: 'Нууц үг буруу байна.' });
+      return res.status(401).json({ error: 'Invalid password.' });
     }
 
-    res.json({ message: 'Амжилттай нэвтэрлээ', user: { name: user.name, email: user.email } });
+    res.json({
+      message: 'Successfully logged in',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        hasAnsweredQuestions: user.hasAnsweredQuestions
+      }
+    });
   } catch (err) {
-    console.error('❌ Signin алдаа:', err);
-    res.status(500).json({ error: 'Серверийн алдаа' });
+    console.error('❌ Signin error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-
-// POST: Mood хадгалах
-// app.post('/moods', async (req, res) => {
-//   try {
-//     const { mood } = req.body;
-//     if (!mood) {
-//       return res.status(400).json({ error: 'Mood утга шаардлагатай.' });
-//     }
-//     const newMood = new Mood({ mood });
-//     await newMood.save();
-//     res.status(201).json({ message: 'Mood хадгалагдлаа', mood: newMood });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Хадгалах үед алдаа гарлаа' });
-//   }
-// });
-
-// GET: Бүх moods авах
+// GET: Fetch all moods
 app.get('/moods', async (req, res) => {
   try {
     const moods = await Mood.find().sort({ date: -1 });
     res.json(moods);
   } catch (error) {
-    res.status(500).json({ error: 'Унших үед алдаа гарлаа' });
+    res.status(500).json({ error: 'Error reading moods' });
   }
 });
 
-// POST: Mood хадгалах
-
+// POST: Save mood
 app.post('/moods', async (req, res) => {
-  console.log('Request body:', req.body);
-
   try {
     const {
       mood,
@@ -151,7 +138,7 @@ app.post('/moods', async (req, res) => {
     } = req.body;
 
     if (!mood) {
-      return res.status(400).json({ error: 'Mood утга шаардлагатай.' });
+      return res.status(400).json({ error: 'Mood is required.' });
     }
 
     const newMood = new Mood({
@@ -164,16 +151,15 @@ app.post('/moods', async (req, res) => {
     });
 
     await newMood.save();
-
-    res.status(201).json({ message: 'Mood хадгалагдлаа', mood: newMood });
+    res.status(201).json({ message: 'Mood saved successfully', mood: newMood });
   } catch (error) {
     console.error('Error saving mood:', error);
-    res.status(500).json({ error: 'Хадгалах үед алдаа гарлаа' });
+    res.status(500).json({ error: 'Error saving mood' });
   }
 });
 
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Сервер порт ${PORT} дээр 0.0.0.0 дээр аслаа`);
+  console.log(`🚀 Server running on port ${PORT} at 0.0.0.0`);
 });
